@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "lib": ["ES2021", "DOM"],
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "types": ["node"],
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@brik/core": ["packages/brik-core/dist"],
+      "@brik/compiler": ["packages/brik-compiler/dist"],
+      "@brik/target-swiftui": ["packages/brik-target-swiftui/dist"],
+      "@brik/target-compose": ["packages/brik-target-compose/dist"],
+      "@brik/react-native": ["packages/brik-react-native/dist"],
+      "@brik/babel-plugin": ["packages/brik-babel-plugin/dist"],
+      "@brik/metro-plugin": ["packages/brik-metro-plugin/dist"],
+      "@brik/cli": ["packages/brik-cli/dist"],
+      "@brik/expo-plugin": ["packages/brik-expo-plugin/dist"],
+      "@brik/schemas": ["packages/brik-schemas/dist"],
+      "@brik/test-utils": ["packages/brik-test-utils/dist"]
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "@brik/core",
+  "version": "0.1.0",
+  "private": false,
+  "license": "MIT",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "tsc -w -b",
+    "lint": "eslint . --ext .ts",
+    "typecheck": "tsc -b",
+    "test": "jest"
+  },
+  "dependencies": {
+    "zod": "^3.23.8",
+    "@brik/schemas": "workspace:*"
+  }
+}
+
+
+
+

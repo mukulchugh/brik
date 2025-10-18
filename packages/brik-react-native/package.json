@@ -1,0 +1,28 @@
+{
+  "name": "@brik/react-native",
+  "version": "0.1.0",
+  "private": false,
+  "license": "MIT",
+  "react-native": "dist/index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "tsc -w -b",
+    "lint": "eslint . --ext .ts,.tsx",
+    "typecheck": "tsc -b",
+    "test": "jest"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-native": ">=0.78.0"
+  },
+  "dependencies": {
+    "@brik/core": "workspace:*"
+  }
+}
+
+
+
+

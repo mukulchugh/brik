@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "Brik Expo Example",
+    "slug": "brik-expo-example",
+    "version": "1.0.0",
+    "sdkVersion": "53.0.0",
+    "plugins": ["@brik/expo-plugin"],
+    "ios": {
+      "bundleIdentifier": "com.brik.example"
+    },
+    "android": {
+      "package": "com.brik.example"
+    }
+  }
+}

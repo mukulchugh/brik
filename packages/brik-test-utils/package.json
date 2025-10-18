@@ -1,0 +1,22 @@
+{
+  "name": "@brik/test-utils",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "tsc -w -b",
+    "lint": "eslint . --ext .ts",
+    "typecheck": "tsc -b",
+    "test": "jest"
+  },
+  "dependencies": {}
+}
+
+
+
+

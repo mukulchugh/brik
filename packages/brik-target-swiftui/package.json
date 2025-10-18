@@ -1,0 +1,26 @@
+{
+  "name": "@brik/target-swiftui",
+  "version": "0.1.0",
+  "private": false,
+  "license": "MIT",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "tsc -w -b",
+    "lint": "eslint . --ext .ts",
+    "typecheck": "tsc -b",
+    "test": "jest"
+  },
+  "dependencies": {
+    "fs-extra": "^11.2.0",
+    "@brik/core": "workspace:*",
+    "@brik/schemas": "workspace:*"
+  }
+}
+
+
+
+

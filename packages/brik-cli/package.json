@@ -1,0 +1,31 @@
+{
+  "name": "@brik/cli",
+  "version": "0.1.0",
+  "private": false,
+  "license": "MIT",
+  "bin": {
+    "brik": "dist/index.js"
+  },
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "tsc -w -b",
+    "lint": "eslint . --ext .ts",
+    "typecheck": "tsc -b",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@brik/compiler": "workspace:*",
+    "@brik/target-swiftui": "workspace:*",
+    "@brik/target-compose": "workspace:*",
+    "commander": "^12.1.0",
+    "fs-extra": "^11.2.0"
+  }
+}
+
+
+
+
