@@ -31,6 +31,11 @@
   },
   "dependencies": {
     "@brik/core": "workspace:*"
+  },
+  "codegenConfig": {
+    "name": "BrikReactNativeSpec",
+    "type": "all",
+    "jsSrcsDir": "src"
   }
 }
 

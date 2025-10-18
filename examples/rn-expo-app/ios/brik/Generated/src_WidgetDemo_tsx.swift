@@ -16,7 +16,7 @@ struct src_WidgetDemo_tsx: View {
           Text("⚡ Fast").font(.system(size: 12)).foregroundStyle(Color("white"))
         }.background(Color(.sRGB, red: 1.000, green: 0.596, blue: 0.000, opacity: 1.000)).cornerRadius(6).padding(6)
       }
-      Button("Tap Widget", action: { /* TODO: onPress */ })
+      Button("Tap Widget", action: { /* TODO: onPress */ }).background(Color(.sRGB, red: 0.545, green: 0.361, blue: 0.965, opacity: 1.000)).cornerRadius(8).padding(12)
     }.background(Color(.sRGB, red: 0.973, green: 0.976, blue: 0.980, opacity: 1.000)).cornerRadius(12).padding(12)
     }
 }
