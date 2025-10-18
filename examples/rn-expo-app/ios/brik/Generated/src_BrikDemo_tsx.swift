@@ -8,7 +8,7 @@ struct src_BrikDemo_tsx: View {
       VStack(alignment: .leading, spacing: 0) {
         Text("Write once in JSX, run native as SwiftUI & Compose.")
       }.background(Color(.sRGB, red: 0.933, green: 0.933, blue: 1.000, opacity: 1.000)).cornerRadius(8).padding(12)
-      Button("Press me", action: { /* TODO: onPress */ })
+      Button("Press me", action: { /* TODO: onPress */ }).background(Color(.sRGB, red: 0.231, green: 0.510, blue: 0.965, opacity: 1.000)).cornerRadius(8).padding(12)
     }.padding(16)
     }
 }

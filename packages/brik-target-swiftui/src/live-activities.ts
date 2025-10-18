@@ -132,6 +132,133 @@ struct ${activityType}ActivityWidget: Widget {
 `;
 }
 
+function generateActivityHandler(config: LiveActivityConfig): string {
+  const { activityType, attributes } = config;
+
+  // Generate static attribute assignments
+  const staticAssignments = Object.entries(attributes.static)
+    .map(([key, typeName]) => {
+      const swiftType = swiftTypeFromTypeName(typeName as string);
+      return `        guard let ${key} = staticAttributes["${key}"] as? ${swiftType} else {
+            throw BrikActivityError.invalidAttributes("Missing or invalid '${key}' in static attributes")
+        }`;
+    })
+    .join('\n');
+
+  const staticParams = Object.keys(attributes.static)
+    .map(key => `${key}: ${key}`)
+    .join(', ');
+
+  // Generate dynamic attribute assignments
+  const dynamicAssignments = Object.entries(attributes.dynamic)
+    .map(([key, typeName]) => {
+      const swiftType = swiftTypeFromTypeName(typeName as string);
+      return `        guard let ${key} = dynamicAttributes["${key}"] as? ${swiftType} else {
+            throw BrikActivityError.invalidAttributes("Missing or invalid '${key}' in dynamic attributes")
+        }`;
+    })
+    .join('\n');
+
+  const dynamicParams = Object.keys(attributes.dynamic)
+    .map(key => `${key}: ${key}`)
+    .join(', ');
+
+  return `
+@available(iOS 16.1, *)
+class ${activityType}Handler: BrikActivityHandler {
+    private var activities: [String: Activity<${activityType}Attributes>] = [:]
+
+    func startActivity(staticAttributes: [String: Any], dynamicAttributes: [String: Any]) throws -> String {
+        // Extract static attributes
+${staticAssignments}
+
+        // Extract dynamic attributes
+${dynamicAssignments}
+
+        // Create attributes
+        let attrs = ${activityType}Attributes(${staticParams})
+        let contentState = ${activityType}Attributes.ContentState(${dynamicParams})
+
+        // Request activity
+        do {
+            let activity = try Activity.request(
+                attributes: attrs,
+                content: .init(state: contentState, staleDate: nil),
+                pushType: .token
+            )
+
+            // Store activity by push token
+            let pushTokenString = activity.pushToken?.hexString ?? ""
+            activities[pushTokenString] = activity
+
+            return pushTokenString
+        } catch {
+            throw BrikActivityError.activityCreationFailed(error)
+        }
+    }
+
+    func updateActivity(token: String, dynamicAttributes: [String: Any]) throws {
+        guard let activity = activities[token] else {
+            throw BrikActivityError.activityNotFound(token)
+        }
+
+        // Extract dynamic attributes
+${dynamicAssignments}
+
+        // Create new content state
+        let contentState = ${activityType}Attributes.ContentState(${dynamicParams})
+
+        // Update activity
+        Task {
+            await activity.update(
+                .init(state: contentState, staleDate: nil)
+            )
+        }
+    }
+
+    func endActivity(token: String, dismissalPolicy: ActivityUIDismissalPolicy) throws {
+        guard let activity = activities[token] else {
+            throw BrikActivityError.activityNotFound(token)
+        }
+
+        // End activity
+        Task {
+            await activity.end(dismissalPolicy: dismissalPolicy)
+        }
+
+        // Remove from tracking
+        activities.removeValue(forKey: token)
+    }
+
+    func getActivityState(token: String) throws -> [String: Any]? {
+        guard let activity = activities[token] else {
+            return nil
+        }
+
+        return [
+            "pushToken": token,
+            "state": "active"
+        ]
+    }
+}
+
+// Auto-register handler on app startup
+@available(iOS 16.1, *)
+private class ${activityType}HandlerRegistration {
+    static let register: Void = {
+        BrikActivityRegistry.shared.register(
+            activityType: "${activityType}",
+            handler: ${activityType}Handler()
+        )
+    }()
+}
+
+// Ensure registration happens
+@available(iOS 16.1, *)
+private let _${activityType.toLowerCase()}HandlerInit = ${activityType}HandlerRegistration.register
+`;
+}
+
 export function generateLiveActivity(root: IRRoot): string | null {
   const liveActivity = (root as any).liveActivity as LiveActivityConfig | undefined;
 
@@ -145,7 +272,10 @@ export function generateLiveActivity(root: IRRoot): string | null {
   // Generate activity views
   const viewsCode = generateActivityViews(liveActivity, activityType);
 
-  return `${attributesCode}\n\n${viewsCode}`;
+  // Generate activity handler
+  const handlerCode = generateActivityHandler(liveActivity);
+
+  return `${attributesCode}\n\n${viewsCode}\n\n${handlerCode}`;
 }
 
 export async function writeLiveActivityFiles(roots: IRRoot[], iosDir: string): Promise<void> {
