@@ -130,7 +130,7 @@ function wrapWithAction(content: string, action: any, indent: number): string {
   return content;
 }
 
-function emitNode(node: IRNode, indent = 2): string {
+export function emitNode(node: IRNode, indent = 2): string {
   const pad = ' '.repeat(indent);
   const action = (node as any).action;
 
@@ -231,13 +231,32 @@ export function generateSwiftUI(root: IRRoot): string {
   return `import SwiftUI\n\nstruct ${root.rootId.replace(/[^A-Za-z0-9_]/g, '_')}: View {\n    var body: some View {\n${body}\n    }\n}`;
 }
 
+// Export specialized version for Live Activities that handles context references
+export function emitNodeForActivity(node: IRNode, indent = 2): string {
+  // For Live Activities, we need to emit the same structure but without
+  // context references in the IR (they'll be handled separately)
+  return emitNode(node, indent);
+}
+
 export async function writeSwiftFiles(roots: IRRoot[], iosDir: string) {
   const outDir = path.join(iosDir, 'brik', 'Generated');
   await fs.mkdirp(outDir);
+
+  // Import the Live Activities generator
+  const { writeLiveActivityFiles } = await import('./live-activities');
+
   for (const r of roots) {
+    // Check if this is a Live Activity
+    if ((r as any).liveActivity) {
+      // Skip regular Swift file generation for Live Activities
+      // They're handled by writeLiveActivityFiles
+      continue;
+    }
+
     const content = generateSwiftUI(r);
     const file = path.join(outDir, `${r.rootId.replace(/[^A-Za-z0-9_]/g, '_')}.swift`);
     await fs.writeFile(file, content, 'utf8');
+
     // If widget metadata exists, emit a minimal WidgetKit extension scaffold
     if ((r as any).widget) {
       const widgetDir = path.join(iosDir, 'BrikWidget');
@@ -246,4 +265,7 @@ export async function writeSwiftFiles(roots: IRRoot[], iosDir: string) {
       await fs.writeFile(path.join(widgetDir, 'BrikWidget.swift'), widgetSwift, 'utf8');
     }
   }
+
+  // Generate Live Activity files
+  await writeLiveActivityFiles(roots, iosDir);
 }

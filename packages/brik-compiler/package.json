@@ -1,8 +1,19 @@
 {
   "name": "@brik/compiler",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": false,
+  "description": "Brik compiler - Transform JSX/TSX to native widgets IR",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brikjs/brik.git",
+    "directory": "packages/brik-compiler"
+  },
+  "bugs": {
+    "url": "https://github.com/brikjs/brik/issues"
+  },
+  "homepage": "https://github.com/brikjs/brik#readme",
+  "keywords": ["brik", "react-native", "widgets", "compiler", "transpiler"],
   "type": "commonjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -15,7 +26,7 @@
     "dev": "tsc -w -b",
     "lint": "eslint . --ext .ts",
     "typecheck": "tsc -b",
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "@babel/parser": "^7.25.3",

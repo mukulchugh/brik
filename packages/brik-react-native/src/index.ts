@@ -212,3 +212,6 @@ export function BrikList<T>({
     ...(rest as any),
   });
 }
+
+// Re-export Live Activities API
+export * from './live-activities';

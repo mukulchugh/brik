@@ -2,6 +2,7 @@ import React from 'react';
 import { SafeAreaView, ScrollView, StatusBar, Text, View } from 'react-native';
 import { AdvancedDemo } from './AdvancedDemo';
 import { BrikDemo } from './BrikDemo';
+import { LiveActivityScreen } from './LiveActivityScreen';
 import { SimpleTest } from './SimpleTest';
 import { WidgetDemo } from './WidgetDemo';
 
@@ -18,6 +19,16 @@ export default function App() {
             Preview widgets in development. Run `pnpm build:native --as-widget` to generate native
             code.
           </Text>
+        </View>
+
+        <View style={{ padding: 16 }}>
+          <Text style={{ fontSize: 18, fontWeight: '600', marginBottom: 8 }}>
+            Live Activities Demo
+          </Text>
+          <Text style={{ fontSize: 14, color: '#666', marginBottom: 12 }}>
+            Real-time updates on lock screen and Dynamic Island (iOS 16.1+)
+          </Text>
+          <LiveActivityScreen />
         </View>
 
         <View style={{ padding: 16 }}>

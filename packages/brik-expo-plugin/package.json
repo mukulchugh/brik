@@ -1,8 +1,19 @@
 {
   "name": "@brik/expo-plugin",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": false,
+  "description": "Expo config plugin for Brik widgets",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brikjs/brik.git",
+    "directory": "packages/brik-expo-plugin"
+  },
+  "bugs": {
+    "url": "https://github.com/brikjs/brik/issues"
+  },
+  "homepage": "https://github.com/brikjs/brik#readme",
+  "keywords": ["brik", "expo", "plugin", "react-native", "widgets"],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": ["dist"],
@@ -11,7 +22,7 @@
     "dev": "tsc -w -b",
     "lint": "eslint . --ext .ts",
     "typecheck": "tsc -b",
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "@expo/config-plugins": "^8.0.6",

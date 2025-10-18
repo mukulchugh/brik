@@ -1,0 +1,11 @@
+src/
+__tests__/
+*.test.ts
+*.test.tsx
+*.spec.ts
+tsconfig.json
+tsconfig.tsbuildinfo
+.turbo/
+node_modules/
+*.log
+.DS_Store

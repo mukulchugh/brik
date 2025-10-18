@@ -1,6 +1,6 @@
 {
   "name": "brik",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "Brik — Write once, run native. Compile JSX/TSX widgets to SwiftUI & Jetpack Compose inside React Native.",
   "license": "MIT",

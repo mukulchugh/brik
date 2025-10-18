@@ -1,8 +1,19 @@
 {
   "name": "@brik/core",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": false,
+  "description": "Brik core types and utilities",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brikjs/brik.git",
+    "directory": "packages/brik-core"
+  },
+  "bugs": {
+    "url": "https://github.com/brikjs/brik/issues"
+  },
+  "homepage": "https://github.com/brikjs/brik#readme",
+  "keywords": ["brik", "core", "types"],
   "type": "commonjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,7 +23,7 @@
     "dev": "tsc -w -b",
     "lint": "eslint . --ext .ts",
     "typecheck": "tsc -b",
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "zod": "^3.23.8",

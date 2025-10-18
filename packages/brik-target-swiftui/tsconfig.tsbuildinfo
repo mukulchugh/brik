@@ -1,1 +1,1 @@
-{"root":["./src/index.ts","./src/types.d.ts"],"version":"5.9.2"}
+{"root":["./src/index.ts","./src/live-activities.ts","./src/types.d.ts"],"version":"5.9.2"}

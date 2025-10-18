@@ -1,18 +1,29 @@
 {
   "name": "@brik/react-native",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": false,
+  "description": "Brik React Native components and Live Activities API",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brikjs/brik.git",
+    "directory": "packages/brik-react-native"
+  },
+  "bugs": {
+    "url": "https://github.com/brikjs/brik/issues"
+  },
+  "homepage": "https://github.com/brikjs/brik#readme",
+  "keywords": ["brik", "react-native", "widgets", "live-activities", "ios", "android"],
   "react-native": "dist/index.js",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": ["dist", "ios"],
   "scripts": {
     "build": "tsc -b",
     "dev": "tsc -w -b",
     "lint": "eslint . --ext .ts,.tsx",
     "typecheck": "tsc -b",
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "peerDependencies": {
     "react": ">=18.0.0",

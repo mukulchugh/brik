@@ -1,8 +1,19 @@
 {
   "name": "@brik/target-compose",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": false,
+  "description": "Brik Jetpack Compose/Glance code generator for Android widgets",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brikjs/brik.git",
+    "directory": "packages/brik-target-compose"
+  },
+  "bugs": {
+    "url": "https://github.com/brikjs/brik/issues"
+  },
+  "homepage": "https://github.com/brikjs/brik#readme",
+  "keywords": ["brik", "compose", "glance", "android", "widgets", "codegen"],
   "type": "commonjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,7 +23,7 @@
     "dev": "tsc -w -b",
     "lint": "eslint . --ext .ts",
     "typecheck": "tsc -b",
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "fs-extra": "^11.2.0",

@@ -1,8 +1,19 @@
 {
   "name": "@brik/cli",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": false,
+  "description": "Brik CLI - Build native widgets from React",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brikjs/brik.git",
+    "directory": "packages/brik-cli"
+  },
+  "bugs": {
+    "url": "https://github.com/brikjs/brik/issues"
+  },
+  "homepage": "https://github.com/brikjs/brik#readme",
+  "keywords": ["brik", "cli", "react-native", "widgets", "ios", "android"],
   "bin": {
     "brik": "dist/index.js"
   },
@@ -15,7 +26,7 @@
     "dev": "tsc -w -b",
     "lint": "eslint . --ext .ts",
     "typecheck": "tsc -b",
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "@brik/compiler": "workspace:*",

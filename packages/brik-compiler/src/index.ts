@@ -348,6 +348,70 @@ function buildIRNode(node: t.JSXElement): IRNode | null {
   return null;
 }
 
+// Helper to detect if a function has @brik-activity JSDoc comment
+function hasActivityComment(path: any): boolean {
+  const comments = path.node.leadingComments;
+  if (!comments) return false;
+  return comments.some((comment: any) => comment.value.includes('@brik-activity'));
+}
+
+// Helper to parse Live Activity configuration from return statement
+function parseLiveActivityConfig(returnStatement: t.ReturnStatement): any | null {
+  if (!returnStatement.argument || !t.isObjectExpression(returnStatement.argument)) {
+    return null;
+  }
+
+  const config: any = {
+    activityType: '',
+    attributes: { static: {}, dynamic: {} },
+    regions: {},
+  };
+
+  for (const prop of returnStatement.argument.properties) {
+    if (!t.isObjectProperty(prop) || !t.isIdentifier(prop.key)) continue;
+
+    const key = prop.key.name;
+
+    if (key === 'activityType' && t.isStringLiteral(prop.value)) {
+      config.activityType = prop.value.value;
+    } else if (key === 'attributes' && t.isObjectExpression(prop.value)) {
+      for (const attrProp of prop.value.properties) {
+        if (!t.isObjectProperty(attrProp) || !t.isIdentifier(attrProp.key)) continue;
+        const attrKey = attrProp.key.name;
+
+        if ((attrKey === 'static' || attrKey === 'dynamic') && t.isObjectExpression(attrProp.value)) {
+          for (const field of attrProp.value.properties) {
+            if (!t.isObjectProperty(field) || !t.isIdentifier(field.key)) continue;
+            const fieldName = field.key.name;
+            const fieldValue = t.isStringLiteral(field.value) ? field.value.value : 'string';
+            config.attributes[attrKey][fieldName] = fieldValue;
+          }
+        }
+      }
+    } else if (key === 'regions' && t.isObjectExpression(prop.value)) {
+      for (const regionProp of prop.value.properties) {
+        if (!t.isObjectProperty(regionProp) || !t.isIdentifier(regionProp.key)) continue;
+        const regionKey = regionProp.key.name;
+
+        if (regionKey === 'lockScreen' && t.isJSXElement(regionProp.value)) {
+          config.regions.lockScreen = buildIRNode(regionProp.value);
+        } else if (regionKey === 'dynamicIsland' && t.isObjectExpression(regionProp.value)) {
+          config.regions.dynamicIsland = {};
+          for (const islandProp of regionProp.value.properties) {
+            if (!t.isObjectProperty(islandProp) || !t.isIdentifier(islandProp.key)) continue;
+            const islandKey = islandProp.key.name;
+            if (t.isJSXElement(islandProp.value)) {
+              config.regions.dynamicIsland[islandKey] = buildIRNode(islandProp.value);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return config.activityType ? config : null;
+}
+
 export async function compileFiles(options: CompileOptions): Promise<IRRoot[]> {
   const projectRoot = options.projectRoot;
   const outDir = options.outDir ?? path.join(projectRoot, BRIK_DIR);
@@ -364,25 +428,60 @@ export async function compileFiles(options: CompileOptions): Promise<IRRoot[]> {
     const abs = path.join(projectRoot, rel);
     const code = await fs.readFile(abs, 'utf8');
     const ast = parse(code, { sourceType: 'module', plugins: ['typescript', 'jsx'] });
+
     let rootNode: IRNode | null = null;
+    let liveActivityConfig: any = null;
+
+    // First, check for Live Activity functions
     traverse(ast, {
-      JSXElement(path: any) {
-        if (t.isJSXIdentifier(path.node.openingElement.name)) {
-          const n = buildIRNode(path.node);
-          if (n) {
-            rootNode = n;
-            path.stop();
+      FunctionDeclaration(path: any) {
+        if (hasActivityComment(path)) {
+          const body = path.node.body.body;
+          const returnStmt = body.find((stmt: any) => t.isReturnStatement(stmt));
+          if (returnStmt) {
+            liveActivityConfig = parseLiveActivityConfig(returnStmt);
+          }
+        }
+      },
+      ExportNamedDeclaration(path: any) {
+        if (path.node.declaration && t.isFunctionDeclaration(path.node.declaration)) {
+          if (hasActivityComment(path)) {
+            const body = path.node.declaration.body.body;
+            const returnStmt = body.find((stmt: any) => t.isReturnStatement(stmt));
+            if (returnStmt) {
+              liveActivityConfig = parseLiveActivityConfig(returnStmt);
+            }
           }
         }
       },
     });
-    if (rootNode) {
+
+    // If no Live Activity found, look for regular widget JSX
+    if (!liveActivityConfig) {
+      traverse(ast, {
+        JSXElement(path: any) {
+          if (t.isJSXIdentifier(path.node.openingElement.name)) {
+            const n = buildIRNode(path.node);
+            if (n) {
+              rootNode = n;
+              path.stop();
+            }
+          }
+        },
+      });
+    }
+
+    // Create root if we found either a widget or activity
+    if (rootNode || liveActivityConfig) {
       const root: IRRoot = {
         version: 1 as const,
         rootId: rel.replace(/[\/\\]/g, '_'),
-        tree: rootNode,
+        tree: rootNode || ({ type: 'View', children: [] } as any),
       };
-      if (options.asWidget) {
+
+      if (liveActivityConfig) {
+        (root as any).liveActivity = liveActivityConfig;
+      } else if (options.asWidget) {
         (root as any).widget = {
           kind: 'BrikWidget',
           families: ['systemMedium', 'medium'], // iOS and Android defaults
@@ -390,6 +489,7 @@ export async function compileFiles(options: CompileOptions): Promise<IRRoot[]> {
           description: 'Widget built with Brik',
         };
       }
+
       validateRoot(root);
       roots.push(root);
       await fs.writeJson(path.join(outDir, `${root.rootId}.json`), root, { spaces: 2 });
