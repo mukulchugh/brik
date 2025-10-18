@@ -22,6 +22,10 @@ RCT_EXTERN_METHOD(getActiveActivities:(RCTPromiseResolveBlock)resolve
 RCT_EXTERN_METHOD(areActivitiesSupported:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(getPushToken:(NSString *)activityId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 + (BOOL)requiresMainQueueSetup
 {
     return YES;
