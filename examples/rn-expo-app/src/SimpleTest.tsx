@@ -12,7 +12,11 @@ export function SimpleTest() {
       <BrikView style={{ backgroundColor: '#eef', padding: 12, borderRadius: 8 }}>
         <BrikText numberOfLines={2}>Write once in JSX, run native as SwiftUI & Compose.</BrikText>
       </BrikView>
-      <BrikButton label="Press me" onPress={() => console.log('pressed')} />
+      <BrikButton
+        label="Press me"
+        action={{ type: 'deeplink', url: 'myapp://test' }}
+        style={{ backgroundColor: '#10B981', padding: 12, borderRadius: 8 }}
+      />
     </BrikStack>
   );
 }

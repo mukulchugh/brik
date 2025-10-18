@@ -4,11 +4,11 @@ struct src_SimpleTest_tsx: View {
     var body: some View {
     VStack(alignment: .center, spacing: 12) {
       Text("Hello").font(.system(size: 24)).fontWeight(.bold)
-      AsyncImage(url: URL(string: "https://picsum.photos/200")).cornerRadius(12).frame(width: 200).frame(height: 120)
+      AsyncImage(url: URL(string: "https://picsum.photos/200")).frame(width: 200, height: 120).cornerRadius(12)
       VStack(alignment: .leading, spacing: 0) {
         Text("Write once in JSX, run native as SwiftUI & Compose.")
-      }.background(Color("#eef")).cornerRadius(8)
+      }.background(Color(.sRGB, red: 0.933, green: 0.933, blue: 1.000, opacity: 1.000)).cornerRadius(8).padding(12)
       Button("Press me", action: { /* TODO: onPress */ })
-    }
+    }.padding(16)
     }
 }

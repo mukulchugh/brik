@@ -81,6 +81,63 @@ function propNumber(
   return undefined;
 }
 
+function propBoolean(
+  attrs: (t.JSXAttribute | t.JSXSpreadAttribute)[],
+  name: string,
+): boolean | undefined {
+  const attr = attrs.find((a) => t.isJSXAttribute(a) && a.name.name === name) as
+    | t.JSXAttribute
+    | undefined;
+  if (!attr) return undefined;
+  if (!attr.value) return true; // Presence without value means true
+  if (t.isJSXExpressionContainer(attr.value) && t.isBooleanLiteral(attr.value.expression))
+    return attr.value.expression.value;
+  return undefined;
+}
+
+function extractAction(attrs: (t.JSXAttribute | t.JSXSpreadAttribute)[]): any | undefined {
+  const actionAttr = attrs.find((a) => t.isJSXAttribute(a) && a.name.name === 'action') as
+    | t.JSXAttribute
+    | undefined;
+  if (!actionAttr || !actionAttr.value) return undefined;
+
+  if (
+    t.isJSXExpressionContainer(actionAttr.value) &&
+    t.isObjectExpression(actionAttr.value.expression)
+  ) {
+    const obj: any = {};
+    for (const prop of actionAttr.value.expression.properties) {
+      if (t.isObjectProperty(prop) && t.isIdentifier(prop.key)) {
+        const key = prop.key.name;
+        if (t.isStringLiteral(prop.value)) {
+          obj[key] = prop.value.value;
+        } else if (t.isNumericLiteral(prop.value)) {
+          obj[key] = prop.value.value;
+        } else if (t.isBooleanLiteral(prop.value)) {
+          obj[key] = prop.value.value;
+        } else if (t.isObjectExpression(prop.value)) {
+          // Handle nested params object
+          const params: any = {};
+          for (const p of prop.value.properties) {
+            if (t.isObjectProperty(p) && t.isIdentifier(p.key)) {
+              if (
+                t.isStringLiteral(p.value) ||
+                t.isNumericLiteral(p.value) ||
+                t.isBooleanLiteral(p.value)
+              ) {
+                params[p.key.name] = (p.value as any).value;
+              }
+            }
+          }
+          obj[key] = params;
+        }
+      }
+    }
+    return obj;
+  }
+  return undefined;
+}
+
 function normalizeStyle(raw?: Record<string, unknown>) {
   if (!raw) return undefined;
   const style: any = {};
@@ -88,7 +145,10 @@ function normalizeStyle(raw?: Record<string, unknown>) {
   const typography: any = {};
   const colors: any = {};
   const borders: any = {};
+  const shadows: any = {};
+
   for (const [k, v] of Object.entries(raw)) {
+    // Layout properties
     if (
       [
         'flexDirection',
@@ -103,34 +163,104 @@ function normalizeStyle(raw?: Record<string, unknown>) {
         'paddingBottom',
         'paddingLeft',
         'margin',
+        'marginHorizontal',
+        'marginVertical',
+        'marginTop',
+        'marginRight',
+        'marginBottom',
+        'marginLeft',
         'width',
         'height',
         'minWidth',
         'minHeight',
         'maxWidth',
         'maxHeight',
+        'flex',
+        'flexGrow',
+        'flexShrink',
+        'flexBasis',
+        'position',
+        'top',
+        'right',
+        'bottom',
+        'left',
+        'aspectRatio',
+        'zIndex',
       ].includes(k)
     ) {
       layout[k] = v;
-    } else if (['fontSize', 'fontWeight', 'numberOfLines', 'ellipsizeMode', 'color'].includes(k)) {
+    }
+    // Typography properties
+    else if (
+      [
+        'fontSize',
+        'fontWeight',
+        'fontFamily',
+        'fontStyle',
+        'color',
+        'numberOfLines',
+        'ellipsizeMode',
+        'textAlign',
+        'textTransform',
+        'lineHeight',
+        'letterSpacing',
+      ].includes(k)
+    ) {
       typography[k] = v;
-    } else if (['backgroundColor', 'opacity'].includes(k)) {
+    }
+    // Color properties
+    else if (['backgroundColor', 'opacity', 'tintColor'].includes(k)) {
       colors[k] = v;
-    } else if (['borderRadius'].includes(k)) {
+    }
+    // Border properties
+    else if (
+      [
+        'borderRadius',
+        'borderTopLeftRadius',
+        'borderTopRightRadius',
+        'borderBottomLeftRadius',
+        'borderBottomRightRadius',
+        'borderWidth',
+        'borderColor',
+        'borderStyle',
+      ].includes(k)
+    ) {
       borders[k] = v;
     }
+    // Shadow properties
+    else if (
+      [
+        'shadowColor',
+        'shadowOpacity',
+        'shadowRadius',
+        'shadowOffsetX',
+        'shadowOffsetY',
+        'elevation',
+      ].includes(k)
+    ) {
+      shadows[k] = v;
+    }
   }
+
   if (Object.keys(layout).length) style.layout = layout;
   if (Object.keys(typography).length) style.typography = typography;
   if (Object.keys(colors).length) style.colors = colors;
   if (Object.keys(borders).length) style.borders = borders;
-  return style;
+  if (Object.keys(shadows).length) style.shadows = shadows;
+
+  return Object.keys(style).length ? style : undefined;
 }
 
 function buildIRNode(node: t.JSXElement): IRNode | null {
   const name = (node.openingElement.name as t.JSXIdentifier).name;
   const attrs = node.openingElement.attributes;
   const style = normalizeStyle(styleFromJSX(attrs));
+  const action = extractAction(attrs);
+
+  // Base properties for all nodes
+  const baseProps: any = {};
+  if (style) baseProps.style = style;
+  if (action) baseProps.action = action;
 
   if (name === 'BrikText') {
     let text = '' as string | number;
@@ -142,21 +272,32 @@ function buildIRNode(node: t.JSXElement): IRNode | null {
       if (t.isJSXExpressionContainer(first) && t.isStringLiteral(first.expression))
         text = first.expression.value;
     }
-    return { type: 'Text', text, style } as any;
+    return { type: 'Text', text, ...baseProps } as any;
   }
 
   if (name === 'BrikButton') {
     const label = propString(attrs, 'label') ?? 'Button';
-    return { type: 'Button', label, style } as any;
+    const variant = propString(attrs, 'variant');
+    const size = propString(attrs, 'size');
+    const buttonProps: any = { type: 'Button', label, ...baseProps };
+    if (variant) buttonProps.variant = variant;
+    if (size) buttonProps.size = size;
+    return buttonProps;
   }
 
   if (name === 'BrikImage') {
     const uri = propString(attrs, 'uri') ?? '';
-    return { type: 'Image', uri, style } as any;
+    const resizeMode = propString(attrs, 'resizeMode');
+    const placeholder = propString(attrs, 'placeholder');
+    const imageProps: any = { type: 'Image', uri, ...baseProps };
+    if (resizeMode) imageProps.resizeMode = resizeMode;
+    if (placeholder) imageProps.placeholder = placeholder;
+    return imageProps;
   }
 
   if (name === 'BrikStack') {
-    const axis = propString(attrs, 'axis') === 'row' ? 'horizontal' : 'vertical';
+    const axisProp = propString(attrs, 'axis');
+    const axis = axisProp === 'horizontal' ? 'horizontal' : 'vertical';
     const children: IRNode[] = [];
     for (const child of node.children) {
       if (t.isJSXElement(child)) {
@@ -164,7 +305,7 @@ function buildIRNode(node: t.JSXElement): IRNode | null {
         if (n) children.push(n);
       }
     }
-    return { type: 'Stack', axis: axis as any, children, style } as any;
+    return { type: 'Stack', axis: axis as any, children, ...baseProps } as any;
   }
 
   if (name === 'BrikView') {
@@ -177,7 +318,31 @@ function buildIRNode(node: t.JSXElement): IRNode | null {
         children.push({ type: 'Text', text: child.value.trim() } as any);
       }
     }
-    return { type: 'View', children, style } as any;
+    return { type: 'View', children, ...baseProps } as any;
+  }
+
+  if (name === 'BrikSpacer') {
+    const flex = propNumber(attrs, 'flex');
+    const spacerProps: any = { type: 'Spacer', ...baseProps };
+    if (flex !== undefined) spacerProps.flex = flex;
+    return spacerProps;
+  }
+
+  if (name === 'BrikProgressBar') {
+    const progress = propNumber(attrs, 'progress') ?? 0;
+    const indeterminate = propBoolean(attrs, 'indeterminate');
+    const progressProps: any = { type: 'ProgressBar', progress, ...baseProps };
+    if (indeterminate) progressProps.indeterminate = indeterminate;
+    return progressProps;
+  }
+
+  if (name === 'BrikList') {
+    // For now, we'll just parse basic list properties
+    // Full list rendering would need more complex template handling
+    const horizontal = propBoolean(attrs, 'horizontal');
+    const listProps: any = { type: 'List', items: [], renderItem: 'default', ...baseProps };
+    if (horizontal) listProps.horizontal = horizontal;
+    return listProps;
   }
 
   return null;
@@ -218,7 +383,12 @@ export async function compileFiles(options: CompileOptions): Promise<IRRoot[]> {
         tree: rootNode,
       };
       if (options.asWidget) {
-        (root as any).widget = { kind: 'BrikWidget', sizes: ['small', 'medium'] };
+        (root as any).widget = {
+          kind: 'BrikWidget',
+          families: ['systemMedium', 'medium'], // iOS and Android defaults
+          displayName: 'Brik Widget',
+          description: 'Widget built with Brik',
+        };
       }
       validateRoot(root);
       roots.push(root);

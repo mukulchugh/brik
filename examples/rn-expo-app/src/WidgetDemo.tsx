@@ -29,7 +29,11 @@ export function WidgetDemo() {
         </BrikView>
       </BrikStack>
 
-      <BrikButton label="Tap Widget" />
+      <BrikButton
+        label="Tap Widget"
+        action={{ type: 'deeplink', url: 'myapp://widget' }}
+        style={{ backgroundColor: '#8B5CF6', padding: 12, borderRadius: 8 }}
+      />
     </BrikStack>
   );
 }

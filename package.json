@@ -41,11 +41,11 @@
     "pnpm": ">=9.0.0"
   },
   "devDependencies": {
+    "@types/babel__traverse": "^7.20.6",
+    "@types/fs-extra": "^11.0.4",
+    "@types/jest": "^29.5.12",
     "@types/node": "^20.14.11",
     "@types/react": "^18.2.74",
-    "@types/fs-extra": "^11.0.4",
-    "@types/babel__traverse": "^7.20.6",
-    "@types/jest": "^29.5.12",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "eslint": "^8.57.0",
@@ -55,8 +55,9 @@
     "prettier": "^3.3.3",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4",
     "turbo": "^2.1.2",
+    "typescript": "^5.5.4",
+    "xcode": "^3.0.1",
     "zx": "^8.1.3"
   }
 }

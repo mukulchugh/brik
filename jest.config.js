@@ -4,6 +4,7 @@ module.exports = {
   testEnvironment: 'node',
   roots: ['<rootDir>/packages'],
   testMatch: ['**/__tests__/**/*.test.ts'],
+  passWithNoTests: true,
   moduleNameMapper: {
     '^@brik/core$': '<rootDir>/packages/brik-core/src',
     '^@brik/schemas$': '<rootDir>/packages/brik-schemas/src',
@@ -13,7 +14,3 @@ module.exports = {
     '^@brik/test-utils$': '<rootDir>/packages/brik-test-utils/src',
   },
 };
-
-
-
-

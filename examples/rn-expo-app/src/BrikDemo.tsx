@@ -1,6 +1,5 @@
 import { BrikButton, BrikImage, BrikStack, BrikText, BrikView } from '@brik/react-native';
 import React from 'react';
-import { Alert } from 'react-native';
 
 export function BrikDemo() {
   return (
@@ -13,7 +12,11 @@ export function BrikDemo() {
       <BrikView style={{ backgroundColor: '#eef', padding: 12, borderRadius: 8 }}>
         <BrikText numberOfLines={2}>Write once in JSX, run native as SwiftUI & Compose.</BrikText>
       </BrikView>
-      <BrikButton label="Press me" onPress={() => Alert.alert('Native press!')} />
+      <BrikButton
+        label="Press me"
+        action={{ type: 'deeplink', url: 'myapp://demo' }}
+        style={{ backgroundColor: '#3B82F6', padding: 12, borderRadius: 8 }}
+      />
     </BrikStack>
   );
 }

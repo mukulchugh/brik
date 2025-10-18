@@ -1,19 +1,45 @@
-import androidx.compose.foundation.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.*
+package generated
+
+import android.content.Context
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.glance.GlanceId
+import androidx.glance.GlanceModifier
+import androidx.glance.Image
+import androidx.glance.ImageProvider
+import androidx.glance.action.actionStartActivity
+import androidx.glance.action.clickable
+import androidx.glance.appwidget.GlanceAppWidget
+import androidx.glance.appwidget.GlanceAppWidgetReceiver
+import androidx.glance.appwidget.provideContent
+import androidx.glance.background
+import androidx.glance.layout.*
+import androidx.glance.text.Text
+import androidx.glance.text.TextStyle
+import androidx.glance.unit.ColorProvider
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.*
-import androidx.compose.foundation.layout.*
+
+class src_BrikDemo_tsxReceiver : GlanceAppWidgetReceiver() {
+    override val glanceAppWidget: GlanceAppWidget = src_BrikDemo_tsxWidget()
+}
+
+class src_BrikDemo_tsxWidget : GlanceAppWidget() {
+    override suspend fun provideGlance(context: Context, id: GlanceId) {
+        provideContent {
+            src_BrikDemo_tsxContent()
+        }
+    }
+}
 
 @Composable
-fun src_BrikDemo_tsx() {
-    Column(horizontalArrangement = Arrangement.Start, verticalArrangement = Arrangement.spacedBy(12.dp), modifier = Modifier) {
-      Text(text = "Brik 👋", modifier = Modifier).fontSize(24.sp).fontWeight(FontWeight.Bold)
-      AsyncImage(model = "https://picsum.photos/200", modifier = Modifier.width(200.dp).height(120.dp).clip(RoundedCornerShape(12.dp)))
-      Column(verticalArrangement = Arrangement.spacedBy(0.dp), modifier = Modifier.clip(RoundedCornerShape(8.dp)).background(Color("#eef"))) {
-        Text(text = "Write once in JSX, run native as SwiftUI & Compose.", modifier = Modifier)
+fun src_BrikDemo_tsxContent() {
+    Column(modifier = GlanceModifier.padding(16.dp)) {
+      Text(text = "Brik 👋", modifier = GlanceModifier, style = TextStyle(fontSize = 24.sp))
+      Image(provider = ImageProvider(R.drawable.placeholder), contentDescription = null, modifier = GlanceModifier.width(200.dp).height(120.dp).cornerRadius(12.dp))
+      Column(modifier = GlanceModifier.padding(12.dp).background(Color(0xFFEEEEFF)).cornerRadius(8.dp)) {
+        Text(text = "Write once in JSX, run native as SwiftUI & Compose.", modifier = GlanceModifier)
       }
-      Button(onClick = { /* TODO: onPress */ }, modifier = Modifier) { Text("Press me") }
+      Button(text = "Press me", onClick = actionRunCallback<RefreshAction>(), modifier = GlanceModifier)
     }
 }

@@ -1,27 +1,53 @@
-import androidx.compose.foundation.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.*
+package generated
+
+import android.content.Context
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.glance.GlanceId
+import androidx.glance.GlanceModifier
+import androidx.glance.Image
+import androidx.glance.ImageProvider
+import androidx.glance.action.actionStartActivity
+import androidx.glance.action.clickable
+import androidx.glance.appwidget.GlanceAppWidget
+import androidx.glance.appwidget.GlanceAppWidgetReceiver
+import androidx.glance.appwidget.provideContent
+import androidx.glance.background
+import androidx.glance.layout.*
+import androidx.glance.text.Text
+import androidx.glance.text.TextStyle
+import androidx.glance.unit.ColorProvider
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.*
-import androidx.compose.foundation.layout.*
+
+class src_WidgetDemo_tsxReceiver : GlanceAppWidgetReceiver() {
+    override val glanceAppWidget: GlanceAppWidget = src_WidgetDemo_tsxWidget()
+}
+
+class src_WidgetDemo_tsxWidget : GlanceAppWidget() {
+    override suspend fun provideGlance(context: Context, id: GlanceId) {
+        provideContent {
+            src_WidgetDemo_tsxContent()
+        }
+    }
+}
 
 @Composable
-fun src_WidgetDemo_tsx() {
-    Column(horizontalArrangement = Arrangement.Start, verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.clip(RoundedCornerShape(12.dp)).background(Color("#f8f9fa"))) {
-      Text(text = "📱 Widget Demo", modifier = Modifier).fontSize(18.sp).fontWeight(FontWeight.Bold)
-      Column(verticalArrangement = Arrangement.spacedBy(0.dp), modifier = Modifier.clip(RoundedCornerShape(8.dp)).background(Color("#e3f2fd"))) {
-        Text(text = "This component can be used as a homescreen widget!", modifier = Modifier, color = Color("#1976d2")).fontSize(14.sp)
+fun src_WidgetDemo_tsxContent() {
+    Column(modifier = GlanceModifier.padding(12.dp).background(Color(0xFFF8F9FA)).cornerRadius(12.dp)) {
+      Text(text = "📱 Widget Demo", modifier = GlanceModifier, style = TextStyle(fontSize = 18.sp))
+      Column(modifier = GlanceModifier.padding(8.dp).background(Color(0xFFE3F2FD)).cornerRadius(8.dp)) {
+        Text(text = "This component can be used as a homescreen widget!", modifier = GlanceModifier, style = TextStyle(color = ColorProvider(Color(0xFF1976D2))), style = TextStyle(fontSize = 14.sp))
       }
-      AsyncImage(model = "https://picsum.photos/150/100", modifier = Modifier.width(150.dp).height(100.dp).clip(RoundedCornerShape(8.dp)))
-      Column(horizontalArrangement = Arrangement.Start, verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier) {
-        Column(verticalArrangement = Arrangement.spacedBy(0.dp), modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(Color("#4caf50"))) {
-          Text(text = "✅ Active", modifier = Modifier, color = Color("white")).fontSize(12.sp)
+      Image(provider = ImageProvider(R.drawable.placeholder), contentDescription = null, modifier = GlanceModifier.width(150.dp).height(100.dp).cornerRadius(8.dp))
+      Row(modifier = GlanceModifier) {
+        Column(modifier = GlanceModifier.padding(6.dp).background(Color(0xFF4CAF50)).cornerRadius(6.dp)) {
+          Text(text = "✅ Active", modifier = GlanceModifier, style = TextStyle(fontSize = 12.sp))
         }
-        Column(verticalArrangement = Arrangement.spacedBy(0.dp), modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(Color("#ff9800"))) {
-          Text(text = "⚡ Fast", modifier = Modifier, color = Color("white")).fontSize(12.sp)
+        Column(modifier = GlanceModifier.padding(6.dp).background(Color(0xFFFF9800)).cornerRadius(6.dp)) {
+          Text(text = "⚡ Fast", modifier = GlanceModifier, style = TextStyle(fontSize = 12.sp))
         }
       }
-      Button(onClick = { /* TODO: onPress */ }, modifier = Modifier) { Text("Tap Widget") }
+      Button(text = "Tap Widget", onClick = actionRunCallback<RefreshAction>(), modifier = GlanceModifier)
     }
 }

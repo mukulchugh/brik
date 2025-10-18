@@ -5,16 +5,16 @@
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -b",
     "dev": "tsc -w -b",
     "lint": "eslint . --ext .ts",
     "typecheck": "tsc -b",
     "test": "jest"
-  }
+  },
+  "dependencies": {},
+  "devDependencies": {}
 }
-
-
-
-
