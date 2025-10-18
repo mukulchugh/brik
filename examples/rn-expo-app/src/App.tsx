@@ -1,12 +1,16 @@
 import React from 'react';
-import { SafeAreaView, StatusBar } from 'react-native';
-import { BrikDemo } from './BrikDemo';
+import { SafeAreaView, ScrollView, StatusBar } from 'react-native';
+import { SimpleTest } from './SimpleTest';
+import { WidgetDemo } from './WidgetDemo';
 
 export default function App() {
   return (
     <SafeAreaView>
       <StatusBar />
-      <BrikDemo />
+      <ScrollView style={{ flex: 1 }}>
+        <SimpleTest />
+        <WidgetDemo />
+      </ScrollView>
     </SafeAreaView>
   );
 }
