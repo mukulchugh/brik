@@ -1,0 +1,26 @@
+appId: com.mukulchugh.rn-expo-app
+name: Live Activities Full Lifecycle
+tags:
+  - live-activity
+  - critical
+  - ios-only
+---
+- clearState
+- launchApp
+
+# Wait for app to load
+- assertVisible:
+    text: "Open up App.js"
+    timeout: 10000
+
+# Note: This is a placeholder flow
+# Once Live Activity UI is implemented and testIDs added:
+# - Navigate to Live Activity demo
+# - Start activity
+# - Verify activity started
+# - Update activity
+# - Verify update
+# - End activity
+# - Verify ended
+
+- takeScreenshot: "03-app-ready-for-live-activity-tests"
