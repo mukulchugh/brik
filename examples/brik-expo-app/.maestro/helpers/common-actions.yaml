@@ -1,0 +1,24 @@
+# Common reusable actions for Maestro tests
+
+# Wait for app to be ready
+- runFlow:
+    commands:
+      - waitForAnimationToEnd
+      - assertVisible:
+          text: "Open up App.js"
+          timeout: 10000
+
+# Dismiss any system alerts (Allow/OK/Dismiss)
+- runFlow:
+    when:
+      visible: "OK|Allow|Dismiss"
+    commands:
+      - tapOn: "OK|Allow|Dismiss"
+
+# Wait for loading indicators to disappear
+- runFlow:
+    commands:
+      - extendedWaitUntil:
+          notVisible:
+            id: "loading-indicator"
+          timeout: 10000
