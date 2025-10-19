@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/@brik/react-native)](https://www.npmjs.com/package/@brik/react-native) [![CI](https://github.com/brikjs/brik/actions/workflows/ci.yml/badge.svg)](https://github.com/brikjs/brik/actions/workflows/ci.yml) [![codecov](https://img.shields.io/badge/codecov-pending-blue)](https://codecov.io/) [![license](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 
-**v0.2.0 - BETA** ⚠️ **Important**: See [Current Limitations](#-current-limitations-beta-status) before using
+**v0.3.0 - BETA** ⚠️ **Important**: See [Current Limitations](#-current-limitations-beta-status) before using
 
 Build native iOS/Android widgets and Live Activities from a single React codebase. No Swift/Kotlin, no Xcode/Android Studio, and no extra JS runtime.
 
@@ -116,7 +116,7 @@ await Brik.updateActivity(activity.id, {
 await Brik.endActivity(activity.id);
 ```
 
-## Home Screen Widgets Example (NEW in v0.2.0)
+## Home Screen Widgets Example
 
 Update iOS and Android home screen widgets from React Native with a unified API:
 
@@ -246,11 +246,102 @@ See [`docs/LIVE_ACTIVITIES_GUIDE.md`](./docs/LIVE_ACTIVITIES_GUIDE.md) for compl
 
 ---
 
+## Packages
+
+Brik is a monorepo containing 10 publishable npm packages:
+
+| Package | Version | Description |
+|---------|---------|-------------|
+| [@brik/react-native](./packages/brik-react-native) | 0.3.0 | React Native bridge, Live Activities & widget APIs |
+| [@brik/cli](./packages/brik-cli) | 0.3.0 | CLI tools for building and setting up widgets |
+| [@brik/core](./packages/brik-core) | 0.3.0 | Core compiler and type system |
+| [@brik/compiler](./packages/brik-compiler) | 0.3.0 | JSX/TSX to native code compiler |
+| [@brik/target-swiftui](./packages/brik-target-swiftui) | 0.3.0 | SwiftUI code generation |
+| [@brik/target-compose](./packages/brik-target-compose) | 0.3.0 | Jetpack Compose code generation |
+| [@brik/schemas](./packages/brik-schemas) | 0.3.0 | Shared type definitions and schemas |
+| [@brik/babel-plugin](./packages/brik-babel-plugin) | 0.3.0 | Babel transform plugin |
+| [@brik/metro-plugin](./packages/brik-metro-plugin) | 0.3.0 | Metro bundler integration |
+| [@brik/expo-plugin](./packages/brik-expo-plugin) | 0.3.0 | Expo config plugin |
+
+**Example App:** [`examples/brik-example-app`](./examples/brik-example-app) - Full React Native demo
+
+---
+
 ## Documentation
 
+### User Guides
 - **Getting Started:** [`docs/GETTING_STARTED.md`](./docs/GETTING_STARTED.md)
 - **Live Activities Guide:** [`docs/LIVE_ACTIVITIES_GUIDE.md`](./docs/LIVE_ACTIVITIES_GUIDE.md) - Complete implementation guide
 - **Widget Setup Guide:** [`docs/WIDGET_SETUP_GUIDE.md`](./docs/WIDGET_SETUP_GUIDE.md)
 - **Installation Guide:** [`docs/guides/INSTALLATION.md`](./docs/guides/INSTALLATION.md)
 - **Architecture:** [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md)
-- **Project Status:** [`docs/status/PROJECT_STATUS.md`](./docs/status/PROJECT_STATUS.md)
+
+### Package Management & Publishing
+- **Setup Guide:** [`docs/setup/SETUP_COMPLETE.md`](./docs/setup/SETUP_COMPLETE.md) - Complete npm publishing guide
+- **Package Analysis:** [`docs/setup/PACKAGE_MANAGEMENT_ANALYSIS.md`](./docs/setup/PACKAGE_MANAGEMENT_ANALYSIS.md) - Monorepo strategy & recommendations
+- **Quick Reference:** [`docs/setup/README.md`](./docs/setup/README.md) - Publishing commands & status
+
+### Project Status
+- **Current Status:** [`docs/status/PROJECT_STATUS.md`](./docs/status/PROJECT_STATUS.md)
+
+---
+
+## Development
+
+### Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/mukulchugh/brik.git
+cd brik
+
+# Install dependencies
+pnpm install
+
+# Build all packages
+pnpm build
+
+# Run tests
+pnpm test
+
+# Type check
+pnpm typecheck
+```
+
+### Monorepo Structure
+
+```
+brik/
+├── packages/          # 10 npm packages
+│   ├── brik-core/
+│   ├── brik-compiler/
+│   ├── brik-react-native/
+│   ├── brik-cli/
+│   └── ...
+├── examples/          # Example apps
+│   └── brik-example-app/
+├── docs/              # Documentation
+│   ├── setup/        # Publishing guides
+│   ├── guides/       # User guides
+│   └── internal/     # Internal docs
+└── .changeset/       # Version management
+```
+
+### Publishing
+
+```bash
+# Create a changeset
+pnpm changeset
+
+# Version packages
+pnpm version-packages
+
+# Build and publish to npm
+pnpm release
+```
+
+See [`docs/setup/SETUP_COMPLETE.md`](./docs/setup/SETUP_COMPLETE.md) for detailed publishing instructions.
+
+### Contributing
+
+See [`docs/CONTRIBUTING.md`](./docs/CONTRIBUTING.md) for contribution guidelines.

@@ -51,7 +51,11 @@
     "@brik/core": "workspace:*",
     "@brik/schemas": "workspace:*",
     "@brik/target-compose": "workspace:*",
-    "@brik/target-swiftui": "workspace:*"
+    "@brik/target-swiftui": "workspace:*",
+    "@types/fs-extra": "^11.0.4",
+    "@types/glob": "^9.0.0",
+    "fs-extra": "^11.2.0",
+    "glob": "^11.0.3"
   },
   "devDependencies": {
     "@types/babel__traverse": "^7.20.6",

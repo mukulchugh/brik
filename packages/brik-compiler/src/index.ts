@@ -412,6 +412,84 @@ function parseLiveActivityConfig(returnStatement: t.ReturnStatement): any | null
   return config.activityType ? config : null;
 }
 
+// Compile a single source string (for testing and simple use cases)
+export function compile(source: string, filename: string): IRRoot {
+  const ast = parse(source, {
+    sourceType: 'module',
+    plugins: ['jsx', 'typescript'],
+  });
+
+  let rootNode: IRNode | null = null;
+  let liveActivity: any = null;
+
+  traverse(ast, {
+    ExportNamedDeclaration(path: any) {
+      const declaration = path.node.declaration;
+      if (!declaration || !t.isFunctionDeclaration(declaration)) return;
+
+      const body = declaration.body?.body;
+      if (!body) return;
+
+      // Check for Live Activity
+      if (hasActivityComment(path)) {
+        const returnStatement = body.find((stmt): stmt is t.ReturnStatement => t.isReturnStatement(stmt));
+        if (returnStatement) {
+          liveActivity = parseLiveActivityConfig(returnStatement);
+        }
+        return;
+      }
+
+      // Find the return statement with JSX
+      const returnStatement = body.find((stmt): stmt is t.ReturnStatement => t.isReturnStatement(stmt));
+      if (!returnStatement) return;
+
+      const returned = returnStatement.argument;
+      if (!returned || !t.isJSXElement(returned)) return;
+
+      rootNode = buildIRNode(returned);
+    },
+    FunctionDeclaration(path: any) {
+      // Also check top-level functions (not just exported)
+      const body = path.node.body?.body;
+      if (!body) return;
+
+      if (hasActivityComment(path)) {
+        const returnStatement = body.find((stmt: any): stmt is t.ReturnStatement => t.isReturnStatement(stmt));
+        if (returnStatement) {
+          liveActivity = parseLiveActivityConfig(returnStatement);
+        }
+        return;
+      }
+
+      const returnStatement = body.find((stmt: any): stmt is t.ReturnStatement => t.isReturnStatement(stmt));
+      if (!returnStatement) return;
+
+      const returned = returnStatement.argument;
+      if (!returned || !t.isJSXElement(returned)) return;
+
+      if (!rootNode) { // Don't override if we already found an exported function
+        rootNode = buildIRNode(returned);
+      }
+    },
+  });
+
+  if (!rootNode) {
+    throw new Error(`No valid Brik widget found in ${filename}`);
+  }
+
+  const root: IRRoot = {
+    version: 1,
+    rootId: filename,
+    tree: rootNode,
+  };
+
+  if (liveActivity) {
+    root.liveActivity = liveActivity;
+  }
+
+  return validateRoot(root);
+}
+
 export async function compileFiles(options: CompileOptions): Promise<IRRoot[]> {
   const projectRoot = options.projectRoot;
   const outDir = options.outDir ?? path.join(projectRoot, BRIK_DIR);
