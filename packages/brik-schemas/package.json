@@ -1,37 +1,49 @@
 {
   "name": "@brik/schemas",
-  "version": "0.2.0",
+  "version": "0.3.0",
+  "description": "Shared schemas and type definitions for Brik",
   "private": false,
-  "description": "Brik schema definitions and validation",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "tsc -b --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "schemas",
+    "types",
+    "validation",
+    "zod"
+  ],
+  "author": "Mukul Chugh",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brikjs/brik.git",
+    "url": "https://github.com/mukulchugh/brik.git",
     "directory": "packages/brik-schemas"
   },
-  "bugs": {
-    "url": "https://github.com/brikjs/brik/issues"
-  },
-  "homepage": "https://github.com/brikjs/brik#readme",
-  "keywords": ["brik", "schemas", "zod", "validation"],
-  "type": "commonjs",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": ["dist"],
-  "scripts": {
-    "build": "tsc -b",
-    "dev": "tsc -w -b",
-    "lint": "eslint . --ext .ts",
-    "typecheck": "tsc -b",
-    "test": "jest --passWithNoTests"
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
     "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.11",
+    "typescript": "^5.5.4"
   }
 }
-
-
-
-
-
-

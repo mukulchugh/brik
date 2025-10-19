@@ -1,44 +1,64 @@
 {
   "name": "@brik/cli",
-  "version": "0.2.0",
+  "version": "0.3.0",
+  "description": "Command-line interface for Brik - build native widgets and setup iOS/Android projects",
   "private": false,
-  "description": "Brik CLI - Build native widgets from React",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/brikjs/brik.git",
-    "directory": "packages/brik-cli"
-  },
-  "bugs": {
-    "url": "https://github.com/brikjs/brik/issues"
-  },
-  "homepage": "https://github.com/brikjs/brik#readme",
-  "keywords": ["brik", "cli", "react-native", "widgets", "ios", "android"],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
     "brik": "dist/index.js"
   },
-  "type": "commonjs",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc -b",
-    "dev": "tsc -w -b",
-    "lint": "eslint . --ext .ts",
-    "typecheck": "tsc -b",
-    "test": "jest --passWithNoTests"
+    "dev": "tsc -b --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "brik",
+    "cli",
+    "react-native",
+    "widgets",
+    "swiftui",
+    "jetpack-compose",
+    "ios",
+    "android",
+    "build-tool"
+  ],
+  "author": "Mukul Chugh",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mukulchugh/brik.git",
+    "directory": "packages/brik-cli"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
     "@brik/compiler": "workspace:*",
-    "@brik/target-swiftui": "workspace:*",
-    "@brik/target-compose": "workspace:*",
+    "@brik/schemas": "workspace:*",
+    "chalk": "^4.1.2",
     "commander": "^12.1.0",
-    "fs-extra": "^11.2.0"
+    "fs-extra": "^11.2.0",
+    "ora": "^5.4.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^20.14.11",
+    "typescript": "^5.5.4"
   }
 }
-
-
-
-
-
-

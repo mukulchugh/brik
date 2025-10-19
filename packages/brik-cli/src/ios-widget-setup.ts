@@ -270,9 +270,12 @@ struct WidgetEntryView: View {
       await fs.writeFile(mainAppEntitlementsPath, mainAppEntitlementsContent);
       console.log(`✅ Created ${mainAppName}.entitlements`);
     }
+
+    // 7. Update main app Info.plist for Live Activities support
+    await updateMainAppInfoPlist(iosDir, mainAppName);
   }
 
-  // 7. Print manual steps needed
+  // 8. Print manual steps needed
   console.log('\n⚠️  Manual steps required in Xcode:');
   console.log('1. Open the .xcworkspace file in Xcode');
   console.log('2. File → New → Target → Widget Extension');
@@ -282,10 +285,54 @@ struct WidgetEntryView: View {
   console.log(`   - Select widget target → Build Settings → Code Signing Entitlements`);
   console.log(`   - Set to: ${widgetName}/${widgetName}.entitlements`);
   console.log(`6. Add ${mainAppName}.entitlements to the main app target (if newly created)`);
-  console.log('7. Add generated Swift files from ios/brik/Generated/ to the widget target');
-  console.log('8. Build and run the widget extension scheme');
+  console.log('7. In main app target → Build Settings → Code Signing Entitlements');
+  console.log(`   - Set to: ${mainAppName}/${mainAppName}.entitlements`);
+  console.log('8. Add generated Swift files from ios/brik/Generated/ to the widget target');
+  console.log('9. Build and run the widget extension scheme');
   console.log(`\n📦 App Group configured: ${effectiveAppGroupId}`);
   console.log('   This App Group enables data sharing between the app and widget.');
+  console.log(`\n🔴 Live Activities enabled: NSSupportsLiveActivities = true`);
+  console.log('   Your app can now display Live Activities on the Lock Screen and Dynamic Island.');
+}
+
+/**
+ * Update main app Info.plist to enable Live Activities support
+ */
+async function updateMainAppInfoPlist(iosDir: string, mainAppName: string): Promise<void> {
+  const infoPlistPath = path.join(iosDir, mainAppName, 'Info.plist');
+
+  if (!(await fs.pathExists(infoPlistPath))) {
+    console.log(`⚠️  Info.plist not found at ${infoPlistPath}`);
+    return;
+  }
+
+  let infoPlistContent = await fs.readFile(infoPlistPath, 'utf8');
+
+  // Check if NSSupportsLiveActivities already exists
+  if (infoPlistContent.includes('NSSupportsLiveActivities')) {
+    console.log(`✅ Live Activities already enabled in Info.plist`);
+    return;
+  }
+
+  // Add NSSupportsLiveActivities key before closing </dict>
+  console.log(`📝 Enabling Live Activities support in Info.plist...`);
+
+  // Find the last occurrence of </dict> before </plist>
+  const lastDictIndex = infoPlistContent.lastIndexOf('</dict>');
+  if (lastDictIndex === -1) {
+    console.log(`⚠️  Could not find </dict> in Info.plist`);
+    return;
+  }
+
+  infoPlistContent =
+    infoPlistContent.slice(0, lastDictIndex) +
+    `\t<key>NSSupportsLiveActivities</key>
+\t<true/>
+` +
+    infoPlistContent.slice(lastDictIndex);
+
+  await fs.writeFile(infoPlistPath, infoPlistContent);
+  console.log(`✅ Added NSSupportsLiveActivities to Info.plist`);
 }
 
 /**

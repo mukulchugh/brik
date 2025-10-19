@@ -1,38 +1,60 @@
 {
   "name": "@brik/core",
   "version": "0.3.0",
+  "description": "Core compiler and type system for Brik - compile JSX/TSX to native SwiftUI and Jetpack Compose",
   "private": false,
-  "description": "Brik core types and utilities",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "tsc -b --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "jest",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "react-native",
+    "widgets",
+    "swiftui",
+    "jetpack-compose",
+    "compiler",
+    "native",
+    "cross-platform"
+  ],
+  "author": "Mukul Chugh",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brikjs/brik.git",
+    "url": "https://github.com/mukulchugh/brik.git",
     "directory": "packages/brik-core"
   },
-  "bugs": {
-    "url": "https://github.com/brikjs/brik/issues"
-  },
-  "homepage": "https://github.com/brikjs/brik#readme",
-  "keywords": ["brik", "core", "types"],
-  "type": "commonjs",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": ["dist"],
-  "scripts": {
-    "build": "tsc -b",
-    "dev": "tsc -w -b",
-    "lint": "eslint . --ext .ts",
-    "typecheck": "tsc -b",
-    "test": "jest --passWithNoTests"
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
-    "zod": "^3.23.8",
+    "@babel/core": "^7.24.7",
+    "@babel/parser": "^7.24.7",
+    "@babel/traverse": "^7.24.7",
+    "@babel/types": "^7.24.7",
     "@brik/schemas": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/babel__traverse": "^7.20.6",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.14.11",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.5.4"
   }
 }
-
-
-
-
-
-

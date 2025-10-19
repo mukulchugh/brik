@@ -179,19 +179,33 @@ See [`docs/WIDGET_SETUP_GUIDE.md`](./docs/WIDGET_SETUP_GUIDE.md) for complete se
 - **CLI tools** - ios-setup, android-setup, build commands
 
 ### Known Limitations ⚠️
-- **Test Coverage**: Moderate test coverage (~30%). Core error handling and storage tested, code generation tests pending.
-- **Device Testing**: Limited validation on physical devices. Simulator testing complete.
-- **Timeline Configuration**: Hardcoded to 15-minute refresh policy (configurable in future release).
-- **Documentation**: Some guides need expansion, especially for advanced Live Activities usage.
+- **Test Coverage**: Limited automated tests. Core functionality works but needs comprehensive test suite.
+- **Device Testing**: Validation pending on physical iOS and Android devices. Simulator testing complete.
+- **Manual Setup Required**:
+  - iOS Widget Extension target must be created manually in Xcode (CLI automates file generation only)
+  - Live Activities require manual Info.plist configuration verification
+  - See [`docs/guides/LIVE_ACTIVITIES_SETUP.md`](./docs/guides/LIVE_ACTIVITIES_SETUP.md) for complete setup guide
+- **Timeline Configuration**: Hardcoded to 15-minute refresh policy (exceeds Apple's recommended budget - will be configurable in v0.3.0).
+- **Android ProGuard**: Release build rules must be added manually (documented in setup guide).
 
 ### Recommended Use
 - ✅ Experimentation and prototyping
 - ✅ Learning the architecture
 - ✅ Contributing to development
 - ✅ Beta testing with non-critical applications
-- ⚠️ Production applications (use with caution, test thoroughly)
+- ⚠️ Production applications - Use with caution:
+  - Thorough testing required on physical devices
+  - Active monitoring for edge cases
+  - Fallback strategies for critical features
+  - See 4-week validation plan in [`docs/internal/RELEASE_READINESS_ASSESSMENT.md`](./docs/internal/RELEASE_READINESS_ASSESSMENT.md)
 
-See [`docs/status/PROJECT_STATUS.md`](./docs/status/PROJECT_STATUS.md) for detailed assessment.
+### Support & Bug Reporting
+- **Response Time**: 24-48 hours for critical bugs
+- **Report Issues**: [GitHub Issues](https://github.com/brikjs/brik/issues)
+- **Ask Questions**: [GitHub Discussions](https://github.com/brikjs/brik/discussions)
+- **Weekly Updates**: Bug fix releases (v0.2.1, v0.2.2, etc.)
+
+See [`docs/internal/RELEASE_READINESS_ASSESSMENT.md`](./docs/internal/RELEASE_READINESS_ASSESSMENT.md) for detailed assessment and validation checklist.
 
 ---
 

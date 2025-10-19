@@ -1,46 +1,61 @@
 {
   "name": "@brik/compiler",
-  "version": "0.2.0",
+  "version": "0.3.0",
+  "description": "JSX/TSX compiler for Brik - transforms React components to native code",
   "private": false,
-  "description": "Brik compiler - Transform JSX/TSX to native widgets IR",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "tsc -b --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "compiler",
+    "jsx",
+    "tsx",
+    "react",
+    "swiftui",
+    "jetpack-compose",
+    "transpiler",
+    "code-generation"
+  ],
+  "author": "Mukul Chugh",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brikjs/brik.git",
+    "url": "https://github.com/mukulchugh/brik.git",
     "directory": "packages/brik-compiler"
   },
-  "bugs": {
-    "url": "https://github.com/brikjs/brik/issues"
-  },
-  "homepage": "https://github.com/brikjs/brik#readme",
-  "keywords": ["brik", "react-native", "widgets", "compiler", "transpiler"],
-  "type": "commonjs",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "bin": {
-    "brik-compiler": "dist/cli.js"
-  },
-  "files": ["dist"],
-  "scripts": {
-    "build": "tsc -b",
-    "dev": "tsc -w -b",
-    "lint": "eslint . --ext .ts",
-    "typecheck": "tsc -b",
-    "test": "jest --passWithNoTests"
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
-    "@babel/parser": "^7.25.3",
-    "@babel/traverse": "^7.25.3",
-    "@babel/types": "^7.25.2",
-    "glob": "^10.4.5",
-    "fs-extra": "^11.2.0",
+    "@babel/core": "^7.24.7",
+    "@babel/parser": "^7.24.7",
+    "@babel/traverse": "^7.24.7",
+    "@babel/types": "^7.24.7",
     "@brik/core": "workspace:*",
-    "@brik/schemas": "workspace:*"
+    "@brik/schemas": "workspace:*",
+    "@brik/target-compose": "workspace:*",
+    "@brik/target-swiftui": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/babel__traverse": "^7.20.6",
+    "@types/node": "^20.14.11",
+    "typescript": "^5.5.4"
   }
 }
-
-
-
-
-
-

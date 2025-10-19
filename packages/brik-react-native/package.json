@@ -1,47 +1,63 @@
 {
   "name": "@brik/react-native",
   "version": "0.3.0",
+  "description": "React Native bridge for Brik - native widgets, Live Activities, and Dynamic Island support",
   "private": false,
-  "description": "Brik React Native components and Live Activities API",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js",
+      "require": "./dist/src/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "ios",
+    "android",
+    "BrikReactNative.podspec",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "tsc -b --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "react-native",
+    "widgets",
+    "live-activities",
+    "dynamic-island",
+    "ios",
+    "android",
+    "swiftui",
+    "jetpack-compose",
+    "widgetkit",
+    "activitykit"
+  ],
+  "author": "Mukul Chugh",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brikjs/brik.git",
+    "url": "https://github.com/mukulchugh/brik.git",
     "directory": "packages/brik-react-native"
   },
-  "bugs": {
-    "url": "https://github.com/brikjs/brik/issues"
-  },
-  "homepage": "https://github.com/brikjs/brik#readme",
-  "keywords": ["brik", "react-native", "widgets", "live-activities", "ios", "android"],
-  "react-native": "dist/src/index.js",
-  "main": "dist/src/index.js",
-  "types": "dist/src/index.d.ts",
-  "files": ["dist", "ios", "android", "BrikReactNative.podspec"],
-  "scripts": {
-    "build": "tsc -b",
-    "dev": "tsc -w -b",
-    "lint": "eslint . --ext .ts,.tsx",
-    "typecheck": "tsc -b",
-    "test": "jest --passWithNoTests"
+  "publishConfig": {
+    "access": "public"
   },
   "peerDependencies": {
-    "react": ">=18.0.0",
-    "react-native": ">=0.78.0"
+    "react": ">=16.8.0",
+    "react-native": ">=0.60.0"
   },
   "dependencies": {
-    "@brik/core": "workspace:*",
-    "@react-native-async-storage/async-storage": "^1.23.1"
+    "@brik/core": "workspace:*"
   },
-  "codegenConfig": {
-    "name": "BrikReactNativeSpec",
-    "type": "all",
-    "jsSrcsDir": "src"
+  "devDependencies": {
+    "@types/react": "^18.2.74",
+    "@types/react-native": "^0.73.0",
+    "typescript": "^5.5.4"
   }
 }
-
-
-
-
-
-

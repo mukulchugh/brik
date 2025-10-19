@@ -1,37 +1,55 @@
 {
   "name": "@brik/babel-plugin",
-  "version": "0.2.0",
+  "version": "0.3.0",
+  "description": "Babel plugin for Brik - transform JSX at build time",
   "private": false,
-  "description": "Babel plugin for Brik widget development",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/brikjs/brik.git",
-    "directory": "packages/brik-babel-plugin"
-  },
-  "bugs": {
-    "url": "https://github.com/brikjs/brik/issues"
-  },
-  "homepage": "https://github.com/brikjs/brik#readme",
-  "keywords": ["brik", "babel", "plugin", "transform"],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "scripts": {
     "build": "tsc -b",
-    "dev": "tsc -w -b",
-    "lint": "eslint . --ext .ts",
-    "typecheck": "tsc -b",
-    "test": "jest --passWithNoTests"
+    "dev": "tsc -b --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "babel",
+    "babel-plugin",
+    "jsx",
+    "transform",
+    "react-native",
+    "widgets"
+  ],
+  "author": "Mukul Chugh",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mukulchugh/brik.git",
+    "directory": "packages/brik-babel-plugin"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@babel/core": "^7.0.0"
   },
   "dependencies": {
-    "@babel/helper-plugin-utils": "^7.24.8",
-    "@babel/types": "^7.24.0"
+    "@brik/compiler": "workspace:*"
   },
   "devDependencies": {
-    "@types/babel__helper-plugin-utils": "^7.10.0",
-    "@types/babel__core": "^7.20.5"
+    "@babel/core": "^7.24.7",
+    "@types/node": "^20.14.11",
+    "typescript": "^5.5.4"
   }
 }

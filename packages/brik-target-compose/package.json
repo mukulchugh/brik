@@ -1,39 +1,53 @@
 {
   "name": "@brik/target-compose",
-  "version": "0.2.0",
+  "version": "0.3.0",
+  "description": "Jetpack Compose code generation target for Brik compiler",
   "private": false,
-  "description": "Brik Jetpack Compose/Glance code generator for Android widgets",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "tsc -b --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "jetpack-compose",
+    "android",
+    "widgets",
+    "glance",
+    "kotlin",
+    "code-generation",
+    "compiler-target"
+  ],
+  "author": "Mukul Chugh",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brikjs/brik.git",
+    "url": "https://github.com/mukulchugh/brik.git",
     "directory": "packages/brik-target-compose"
   },
-  "bugs": {
-    "url": "https://github.com/brikjs/brik/issues"
-  },
-  "homepage": "https://github.com/brikjs/brik#readme",
-  "keywords": ["brik", "compose", "glance", "android", "widgets", "codegen"],
-  "type": "commonjs",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": ["dist"],
-  "scripts": {
-    "build": "tsc -b",
-    "dev": "tsc -w -b",
-    "lint": "eslint . --ext .ts",
-    "typecheck": "tsc -b",
-    "test": "jest --passWithNoTests"
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
-    "fs-extra": "^11.2.0",
     "@brik/core": "workspace:*",
     "@brik/schemas": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.11",
+    "typescript": "^5.5.4"
   }
 }
-
-
-
-
-
-
