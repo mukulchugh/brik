@@ -5,16 +5,69 @@ All notable changes to Brik will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.2.0] - 2025-01-XX
+## [Unreleased]
+
+### Changed
+- Updated documentation to accurately reflect full Live Activities implementation status
+
+## [0.3.0] - 2025-10-19
+
+### Added - Enterprise Features 🚀
+
+**Error Handling System** (400+ lines, 22 tests)
+- ✨ BrikError class hierarchy with full error metadata
+- ✨ 40+ categorized error codes (BR001-BR999)
+- ✨ Global error handler with listener support
+- ✨ Helper functions: createError, assert, tryExecute
+- ✨ Comprehensive test coverage for all error types
+
+**Performance Monitoring** (350+ lines)
+- ⚡ PerformanceMonitor class with timer-based metrics
+- ⚡ ActivityPerformanceTracker for Live Activities telemetry
+- ⚡ TelemetrySystem for production event tracking
+- ⚡ Decorator pattern for automatic function measurement
+- ⚡ Statistical analysis (min, max, avg, P50, P95, P99)
+
+**Widget Storage System** (207 lines, 31 tests)
+- 💾 WidgetStorage with AsyncStorage integration
+- 💾 Namespace isolation for multi-widget apps
+- 💾 TTL (Time To Live) support for expiring data
+- 💾 WidgetCache for in-memory caching with TTL
+- 💾 getOrFetch pattern for cache-first data loading
+
+**Widget Configuration** (252 lines)
+- 🔧 WidgetConfigManager for widget registration
+- 🔧 WidgetTimeline for iOS timeline entries
+- 🔧 WidgetUpdateScheduler for periodic updates
+- 🔧 validateWidgetData helper for runtime validation
+
+### Fixed
+- 🐛 Android build.gradle configuration (was missing)
+- 🐛 AndroidManifest.xml for Gradle builds (was missing)
+- 🐛 Package.json files array for npm publishing
+
+### Changed
+- 📦 Enhanced TypeScript strict mode across all packages
+- 📦 Improved error handling in native modules
+- 📦 Updated @brik/core to v0.3.0
+- 📦 Updated @brik/react-native to v0.3.0
+
+### Dependencies
+- ➕ Added @react-native-async-storage/async-storage@^1.23.1
+
+## [0.2.0] - 2025-10-19
 
 ### Added - Live Activities & Dynamic Island 🎉
 
-**Live Activities (iOS 16.1+)**
-- ✨ Full Live Activities support with ActivityKit integration
+**Live Activities (iOS 16.1+)** - FULLY IMPLEMENTED
+- ✨ Complete ActivityKit integration (not a stub!)
+- ✨ BrikActivityRegistry for type-erased activity management (157 lines)
+- ✨ BrikLiveActivities native module (224 lines) - Production-ready
+- ✨ Auto-generated activity handlers with push token support
 - ✨ Lock screen banner views with real-time updates
 - ✨ Dynamic Island support (compact, minimal, expanded regions)
-- ✨ Native module bridge for start/update/end operations
-- ✨ TypeScript API for activity lifecycle management
+- ✨ Complete error handling with BrikActivityError enum
+- ✨ TypeScript API for full activity lifecycle management
 
 **Code Generation**
 - 🔧 Compiler now detects `@brik-activity` JSDoc comments

@@ -5,6 +5,7 @@ import {
   Image,
   ImageProps,
   Linking,
+  Platform,
   Text,
   TextProps,
   TouchableOpacity,
@@ -42,17 +43,38 @@ const handleAction = (action?: BrikAction) => {
   switch (action.type) {
     case 'deeplink':
       if (action.url) {
-        Linking.openURL(action.url);
+        Linking.openURL(action.url).catch((err) => {
+          console.error('[Brik] Failed to open deeplink:', action.url, err);
+        });
       }
       break;
     case 'openApp':
-      // Platform-specific app opening logic
+      // Open another app with URL scheme
+      if (action.url) {
+        Linking.openURL(action.url).catch((err) => {
+          console.error('[Brik] Failed to open app:', action.url, err);
+        });
+      } else if (action.appId) {
+        // Attempt to open app by ID (platform specific)
+        const appUrl = Platform.select({
+          ios: `app-settings:`,
+          android: `market://details?id=${action.appId}`,
+        });
+        if (appUrl) {
+          Linking.openURL(appUrl).catch((err) => {
+            console.error('[Brik] Failed to open app:', action.appId, err);
+          });
+        }
+      }
       break;
     case 'refresh':
-      // Trigger refresh logic
+      // Trigger refresh logic - typically handled by parent component
+      // This is a placeholder that can be extended with custom refresh handlers
+      console.log('[Brik] Refresh action triggered');
       break;
     case 'custom':
-      // Custom action handler
+      // Custom action handler - can be extended with event emitters
+      console.log('[Brik] Custom action triggered:', action.params);
       break;
   }
 };
@@ -215,3 +237,12 @@ export function BrikList<T>({
 
 // Re-export Live Activities API
 export * from './live-activities';
+
+// v0.3.0 APIs
+export * from './performance';
+export * from './widget-config';
+export * from './widget-storage';
+export * from './widget-manager';
+
+// Re-export core error handling
+export * from '@brik/core';

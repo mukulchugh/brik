@@ -155,7 +155,17 @@ export function emitNode(node: IRNode, indent = 2): string {
       return `${pad}AsyncImage(url: URL(string: \"${(node as any).uri}\"))${swiftStyle(node.style)}`;
     }
     case 'Button': {
-      return `${pad}Button(\"${(node as any).label}\", action: { /* TODO: onPress */ })${swiftStyle(node.style)}`;
+      const label = (node as any).label;
+      const action = (node as any).action;
+
+      if (action?.type === 'deeplink' && action.url) {
+        // For widgets, use Button with .widgetURL()
+        // For regular apps, this will open the URL
+        return `${pad}Button(\"${label}\") {}\n${pad}.widgetURL(URL(string: \"${action.url}\"))${swiftStyle(node.style)}`;
+      }
+
+      // No action - empty button (widgets don't support custom actions)
+      return `${pad}Button(\"${label}\") {}${swiftStyle(node.style)}`;
     }
     case 'View': {
       const children = (node as any).children ?? [];
@@ -189,10 +199,26 @@ ${pad}}${swiftStyle(node.style)}`;
       return `${pad}ProgressView(value: ${progress})${swiftStyle(node.style)}`;
     }
     case 'List': {
-      // Simplified list - in real implementation would need data binding
-      return `${pad}ScrollView {
-${pad}    VStack(alignment: .leading) {
-${pad}        // List items
+      const items = (node as any).items ?? [];
+      const horizontal = (node as any).horizontal ?? false;
+      const axis = horizontal ? '.horizontal' : '.vertical';
+      const stack = horizontal ? 'HStack' : 'VStack';
+
+      // For widgets, lists are typically static with predetermined items
+      // Generate simple list with numbered items
+      if (items.length > 0) {
+        const listItems = items.map((_: any, idx: number) => `Text("Item ${idx + 1}")`).join('\n${pad}    ');
+        return `${pad}ScrollView(${axis}) {
+${pad}    ${stack}(alignment: .leading, spacing: 8) {
+${pad}        ${listItems}
+${pad}    }
+${pad}}${swiftStyle(node.style)}`;
+      }
+
+      // Empty list fallback
+      return `${pad}ScrollView(${axis}) {
+${pad}    ${stack}(alignment: .leading, spacing: 8) {
+${pad}        Text("No items")
 ${pad}    }
 ${pad}}${swiftStyle(node.style)}`;
     }

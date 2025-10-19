@@ -171,6 +171,31 @@ export async function areActivitiesSupported(): Promise<boolean> {
   }
 }
 
+/**
+ * Get the push token for an activity (for remote updates)
+ *
+ * @example
+ * const pushToken = await Brik.getPushToken(activity.id);
+ * // Send pushToken to your server for remote updates
+ */
+export async function getPushToken(activityId: string): Promise<string | null> {
+  if (Platform.OS !== 'ios') {
+    throw new Error('Live Activities are only supported on iOS 16.1+');
+  }
+
+  if (!BrikLiveActivities) {
+    throw new Error('BrikLiveActivities native module not found. Make sure the native module is linked.');
+  }
+
+  try {
+    const token = await BrikLiveActivities.getPushToken(activityId);
+    return token;
+  } catch (error) {
+    console.error('[Brik] Failed to get push token:', error);
+    return null;
+  }
+}
+
 // Export all APIs
 export const Brik = {
   startActivity,
@@ -178,6 +203,7 @@ export const Brik = {
   endActivity,
   getActiveActivities,
   areActivitiesSupported,
+  getPushToken,
 };
 
 export default Brik;

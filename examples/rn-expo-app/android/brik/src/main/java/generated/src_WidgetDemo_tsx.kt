@@ -48,6 +48,6 @@ fun src_WidgetDemo_tsxContent() {
           Text(text = "⚡ Fast", modifier = GlanceModifier, style = TextStyle(fontSize = 12.sp))
         }
       }
-      Button(text = "Tap Widget", onClick = actionRunCallback<RefreshAction>(), modifier = GlanceModifier)
+      Button(text = "Tap Widget", onClick = actionStartActivity<MainActivity>(), modifier = GlanceModifier.padding(12.dp).background(Color(0xFF8B5CF6)).cornerRadius(8.dp))
     }
 }

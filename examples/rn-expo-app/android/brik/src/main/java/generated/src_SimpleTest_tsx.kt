@@ -40,6 +40,6 @@ fun src_SimpleTest_tsxContent() {
       Column(modifier = GlanceModifier.padding(12.dp).background(Color(0xFFEEEEFF)).cornerRadius(8.dp)) {
         Text(text = "Write once in JSX, run native as SwiftUI & Compose.", modifier = GlanceModifier)
       }
-      Button(text = "Press me", onClick = actionRunCallback<RefreshAction>(), modifier = GlanceModifier)
+      Button(text = "Press me", onClick = actionStartActivity<MainActivity>(), modifier = GlanceModifier.padding(12.dp).background(Color(0xFF10B981)).cornerRadius(8.dp))
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@brik/react-native",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": false,
   "description": "Brik React Native components and Live Activities API",
   "license": "MIT",
@@ -14,10 +14,10 @@
   },
   "homepage": "https://github.com/brikjs/brik#readme",
   "keywords": ["brik", "react-native", "widgets", "live-activities", "ios", "android"],
-  "react-native": "dist/index.js",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": ["dist", "ios"],
+  "react-native": "dist/src/index.js",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "files": ["dist", "ios", "android", "BrikReactNative.podspec"],
   "scripts": {
     "build": "tsc -b",
     "dev": "tsc -w -b",
@@ -30,7 +30,8 @@
     "react-native": ">=0.78.0"
   },
   "dependencies": {
-    "@brik/core": "workspace:*"
+    "@brik/core": "workspace:*",
+    "@react-native-async-storage/async-storage": "^1.23.1"
   },
   "codegenConfig": {
     "name": "BrikReactNativeSpec",

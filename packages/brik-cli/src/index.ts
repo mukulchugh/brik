@@ -5,7 +5,9 @@ import { writeSwiftFiles } from '@brik/target-swiftui';
 import { Command } from 'commander';
 import fs from 'fs-extra';
 import path from 'path';
-import { createWidgetFiles, getMainAppBundleId } from './xcode-utils';
+import { setupAndroidWidget } from './android-widget-setup';
+import { setupIOSWidget } from './ios-widget-setup';
+import { getMainAppBundleId } from './xcode-utils';
 
 const program = new Command();
 program.name('brik').description('Brik CLI – Write once, run native').version('0.1.0');
@@ -135,8 +137,10 @@ program
 
 program
   .command('ios-setup')
-  .description('Set up iOS widget extension (creates files, needs Xcode for target)')
+  .description('Set up iOS widget extension with App Groups for data sharing')
   .option('-n, --name <name>', 'Widget extension name', 'BrikWidget')
+  .option('-b, --bundle-id <bundleId>', 'Main app bundle ID (auto-detected if not provided)')
+  .option('-g, --app-group <appGroupId>', 'Custom App Group ID (defaults to group.{bundleId}.widgets)')
   .action(async (opts) => {
     try {
       const cwd = process.cwd();
@@ -147,31 +151,70 @@ program
         process.exit(1);
       }
 
-      const bundleId = getMainAppBundleId(iosDir);
-      console.log(`📱 Main app bundle ID: ${bundleId || 'not found'}`);
+      // Get or detect bundle ID
+      const bundleId = opts.bundleId || getMainAppBundleId(iosDir);
+      if (!bundleId) {
+        console.error('❌ Could not detect bundle ID. Please provide it with --bundle-id');
+        process.exit(1);
+      }
 
-      await createWidgetFiles(iosDir, opts.name);
+      console.log(`📱 Main app bundle ID: ${bundleId}`);
 
-      // List generated files
+      // Run the setup
+      await setupIOSWidget({
+        iosDir,
+        widgetName: opts.name,
+        bundleId,
+        appGroupId: opts.appGroup,
+      });
+
+      // List generated files if they exist
       const generatedDir = path.join(iosDir, 'brik', 'Generated');
       if (await fs.pathExists(generatedDir)) {
         const files = await fs.readdir(generatedDir);
-        console.log(`\n📎 Generated files to add to ${opts.name} target:`);
-        for (const file of files.filter((f) => f.endsWith('.swift'))) {
-          console.log(`  - ${file}`);
+        const swiftFiles = files.filter((f) => f.endsWith('.swift'));
+        if (swiftFiles.length > 0) {
+          console.log(`\n📎 Generated Brik files to add to ${opts.name} target:`);
+          for (const file of swiftFiles) {
+            console.log(`  - ${file}`);
+          }
         }
       }
 
-      console.log('\n✅ Widget files created!');
-      console.log('\n📋 Next steps:');
-      console.log('1. Open ios/*.xcworkspace in Xcode');
-      console.log('2. File → New → Target → Widget Extension');
-      console.log(`3. Name: ${opts.name}`);
-      console.log('4. Delete generated template, use our files instead');
-      console.log('5. Build widget extension');
-      console.log('\nOr see examples/rn-expo-app/WIDGET_SETUP.md for details');
+      console.log('\n✅ Widget extension setup complete!');
     } catch (error) {
       console.error('❌ iOS setup failed:', error);
+      process.exit(1);
+    }
+  });
+
+program
+  .command('android-setup')
+  .description('Set up Android widget (Glance) with SharedPreferences for data sharing')
+  .option('-n, --name <name>', 'Widget name', 'BrikWidget')
+  .option('-p, --package-name <packageName>', 'App package name (auto-detected if not provided)')
+  .action(async (opts) => {
+    try {
+      const cwd = process.cwd();
+      const androidDir = path.join(cwd, 'android');
+
+      if (!(await fs.pathExists(androidDir))) {
+        console.error('❌ android/ directory not found. Are you in a React Native project?');
+        process.exit(1);
+      }
+
+      console.log(`📱 Setting up Android widget: ${opts.name}`);
+
+      // Run the setup
+      await setupAndroidWidget({
+        androidDir,
+        widgetName: opts.name,
+        packageName: opts.packageName,
+      });
+
+      console.log('\n✅ Android widget setup complete!');
+    } catch (error) {
+      console.error('❌ Android setup failed:', error);
       process.exit(1);
     }
   });

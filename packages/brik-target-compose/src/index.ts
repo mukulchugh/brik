@@ -137,7 +137,22 @@ function emitNode(node: IRNode, indent = 2): string {
       return `${pad}AsyncImage(model = "${(node as any).uri}", contentDescription = null, modifier = ${composeStyle(node.style)})`;
     }
     case 'Button': {
-      return `${pad}Button(onClick = { /* TODO: onPress */ }, modifier = ${composeStyle(node.style)}) { Text("${(node as any).label}") }`;
+      const label = (node as any).label;
+      const action = (node as any).action;
+
+      if (action?.type === 'deeplink' && action.url) {
+        // For regular Compose UI, handle deep link with Intent
+        return `${pad}Button(
+${pad}    onClick = {
+${pad}        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("${action.url}"))
+${pad}        context.startActivity(intent)
+${pad}    },
+${pad}    modifier = ${composeStyle(node.style)}
+${pad}) { Text("${label}") }`;
+      }
+
+      // No action - empty click handler
+      return `${pad}Button(onClick = {}, modifier = ${composeStyle(node.style)}) { Text("${label}") }`;
     }
     case 'View': {
       const children = (node as any).children ?? [];
@@ -170,7 +185,26 @@ function emitNode(node: IRNode, indent = 2): string {
 export function generateCompose(root: IRRoot): string {
   const name = root.rootId.replace(/[^A-Za-z0-9_]/g, '_');
   const body = emitNode(root.tree, 4);
-  return `import androidx.compose.foundation.*\nimport androidx.compose.foundation.layout.*\nimport androidx.compose.material3.*\nimport androidx.compose.runtime.*\nimport androidx.compose.ui.*\nimport androidx.compose.ui.graphics.Color\nimport androidx.compose.ui.text.TextStyle\nimport androidx.compose.ui.text.font.FontWeight\nimport androidx.compose.ui.unit.*\nimport coil.compose.AsyncImage\n\n@Composable\nfun ${name}() {\n${body}\n}`;
+  return `import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.*
+import coil.compose.AsyncImage
+
+@Composable
+fun ${name}() {
+    val context = LocalContext.current
+${body}
+}`;
 }
 
 // Glance widget generator for Android widgets
@@ -232,10 +266,17 @@ function emitGlanceNode(node: IRNode, indent = 2): string {
 
     case 'Image': {
       const uri = (node as any).uri;
-      let result = `${pad}Image(provider = ImageProvider(R.drawable.placeholder), contentDescription = null, modifier = ${glanceModifier(node.style)})`;
+      // Note: Glance widgets don't support network images directly.
+      // Images must be bundled as drawable resources or use content URIs.
+      // For dynamic content, images should be downloaded and provided via FileProvider
+      const imageProvider = uri.startsWith('http')
+        ? 'ImageProvider(R.drawable.placeholder) // Network images require download & FileProvider'
+        : 'ImageProvider(R.drawable.placeholder)';
+
+      let result = `${pad}Image(provider = ${imageProvider}, contentDescription = "Image", modifier = ${glanceModifier(node.style)})`;
 
       if (action?.type === 'deeplink' && action.url) {
-        result = `${pad}Image(provider = ImageProvider(R.drawable.placeholder), contentDescription = null, modifier = ${glanceModifier(node.style)}.clickable(actionStartActivity<MainActivity>()))`;
+        result = `${pad}Image(provider = ${imageProvider}, contentDescription = "Image", modifier = ${glanceModifier(node.style)}.clickable(actionStartActivity<MainActivity>()))`;
       }
 
       return result;

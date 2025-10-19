@@ -46,6 +46,9 @@ export class BrikError extends Error {
 
 export const BRIK_DIR = '.brik';
 
+// v0.3.0 Enhanced Error Handling
+export * from './errors';
+
 
 
 

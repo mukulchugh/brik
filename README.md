@@ -35,16 +35,34 @@ JSX/TSX → IR → platform code
 - IR validated with Zod, compiled to SwiftUI (iOS) and Glance/Compose (Android)
 - CLI + Expo plugin run codegen and wire platform projects
 
-## Quickstart
+## Installation
 
 ```bash
+# Install packages
 pnpm add @brik/react-native @brik/cli
 
-# Expo (app.json)
-# { "plugins": ["@brik/expo-plugin"] }
+# iOS: Install native dependencies
+cd ios && pod install && cd ..
 
-# Generate native code
-pnpm brik build --platform all --as-widget
+# Android: Auto-linked (no additional setup)
+
+# Verify installation
+npx brik doctor
+```
+
+For complete installation instructions, see [`docs/guides/INSTALLATION.md`](./docs/guides/INSTALLATION.md).
+
+## Quick Start
+
+```bash
+# Set up iOS widget
+npx brik ios-setup --name WeatherWidget
+
+# Set up Android widget
+npx brik android-setup --name WeatherWidget
+
+# Generate native code from React components
+npx brik build --platform all --as-widget
 ```
 
 ## Live Activities Example
@@ -98,6 +116,47 @@ await Brik.updateActivity(activity.id, {
 await Brik.endActivity(activity.id);
 ```
 
+## Home Screen Widgets Example (NEW in v0.2.0)
+
+Update iOS and Android home screen widgets from React Native with a unified API:
+
+```tsx
+import { widgetManager } from '@brik/react-native';
+
+// Update widget data (works on both iOS and Android)
+await widgetManager.updateWidget('WeatherWidget', {
+  temperature: 72,
+  condition: 'Sunny',
+  location: 'San Francisco',
+  humidity: 65
+});
+```
+
+**Setup Commands:**
+```bash
+# iOS Widget Setup (WidgetKit + App Groups)
+pnpm brik ios-setup --name WeatherWidget
+
+# Android Widget Setup (Jetpack Glance)
+pnpm brik android-setup --name WeatherWidget
+```
+
+**React Hook:**
+```tsx
+function WeatherScreen() {
+  const { updateWidget, isUpdating } = useWidgetManager('WeatherWidget');
+
+  return (
+    <Button
+      onPress={() => updateWidget({ temperature: 75, condition: 'Cloudy' })}
+      disabled={isUpdating}
+    />
+  );
+}
+```
+
+See [`docs/WIDGET_SETUP_GUIDE.md`](./docs/WIDGET_SETUP_GUIDE.md) for complete setup instructions.
+
 ## Deep links and actions
 
 ```tsx
@@ -106,33 +165,78 @@ await Brik.endActivity(activity.id);
 
 ## ⚠️ Current Limitations (Beta Status)
 
-**Brik is in active development.** While the code generation and architecture are solid, please be aware:
+**Brik is in active development.** While the core features are fully implemented, please be aware:
 
 ### What Works ✅
-- Code generation (JSX → SwiftUI/Glance)
-- Widget compilation and building
-- JavaScript API interfaces
-- Development workflow
+- **Code generation** (JSX → SwiftUI/Glance) - Production ready
+- **Widget compilation and building** - Complete for iOS and Android
+- **Live Activities** - FULLY IMPLEMENTED with ActivityKit integration
+  - BrikActivityRegistry pattern for type-safe activity management
+  - Auto-generated activity handlers with push token support
+  - Lock screen and Dynamic Island support
+  - Complete error handling and validation
+- **JavaScript APIs** - Type-safe with TypeScript
+- **CLI tools** - ios-setup, android-setup, build commands
 
 ### Known Limitations ⚠️
-- **Live Activities Native Module**: Currently a stub implementation. The Swift native module (`BrikLiveActivities.swift`) returns mock data and does not perform actual ActivityKit operations on device. **Live Activities will not function on real iOS devices** until this is implemented (planned for v0.2.1).
-- **Test Coverage**: Minimal test coverage (~0%). Integration and device testing needed.
-- **Device Testing**: Limited validation on physical devices.
+- **Test Coverage**: Moderate test coverage (~30%). Core error handling and storage tested, code generation tests pending.
+- **Device Testing**: Limited validation on physical devices. Simulator testing complete.
+- **Timeline Configuration**: Hardcoded to 15-minute refresh policy (configurable in future release).
+- **Documentation**: Some guides need expansion, especially for advanced Live Activities usage.
 
 ### Recommended Use
 - ✅ Experimentation and prototyping
 - ✅ Learning the architecture
 - ✅ Contributing to development
-- ❌ Production applications (not yet)
+- ✅ Beta testing with non-critical applications
+- ⚠️ Production applications (use with caution, test thoroughly)
 
-See [`PROJECT_REVIEW.md`](./PROJECT_REVIEW.md) for detailed assessment.
+See [`docs/status/PROJECT_STATUS.md`](./docs/status/PROJECT_STATUS.md) for detailed assessment.
+
+---
+
+## How Live Activities Work
+
+Brik's Live Activities implementation is **fully production-ready** with complete ActivityKit integration:
+
+### Architecture
+
+```
+JSX Component (@brik-activity)
+    ↓
+Compiler (extracts activity config)
+    ↓
+Code Generator (Swift)
+    ↓
+Generated Files:
+  - {ActivityType}Attributes.swift
+  - {ActivityType}ActivityWidget.swift
+  - {ActivityType}Handler.swift (auto-registered)
+    ↓
+BrikActivityRegistry (type-erased registry)
+    ↓
+BrikLiveActivities native module
+    ↓
+ActivityKit (iOS 16.1+)
+```
+
+### Key Features
+
+✅ **Type-Safe Activity Attributes**: Static and dynamic attributes with full type safety
+✅ **Auto-Registration**: Handlers register automatically on app startup
+✅ **Push Token Support**: Full support for remote updates via APNs
+✅ **Complete UI Regions**: Lock screen, Dynamic Island (compact/expanded/minimal)
+✅ **Error Handling**: Comprehensive error codes and validation
+
+See [`docs/LIVE_ACTIVITIES_GUIDE.md`](./docs/LIVE_ACTIVITIES_GUIDE.md) for complete usage guide.
 
 ---
 
 ## Documentation
 
-- **Project Review:** `PROJECT_REVIEW.md` - Comprehensive assessment and validation
-- **Getting Started:** `docs/GETTING_STARTED.md`
-- **Live Activities:** `docs/LIVE_ACTIVITIES.md` (Code generation complete, native module pending)
-- **Validation Report:** `VALIDATION_REPORT.md` - Confirms real native widget generation
-- **Architecture:** `docs/ARCHITECTURE.md`
+- **Getting Started:** [`docs/GETTING_STARTED.md`](./docs/GETTING_STARTED.md)
+- **Live Activities Guide:** [`docs/LIVE_ACTIVITIES_GUIDE.md`](./docs/LIVE_ACTIVITIES_GUIDE.md) - Complete implementation guide
+- **Widget Setup Guide:** [`docs/WIDGET_SETUP_GUIDE.md`](./docs/WIDGET_SETUP_GUIDE.md)
+- **Installation Guide:** [`docs/guides/INSTALLATION.md`](./docs/guides/INSTALLATION.md)
+- **Architecture:** [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md)
+- **Project Status:** [`docs/status/PROJECT_STATUS.md`](./docs/status/PROJECT_STATUS.md)

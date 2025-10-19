@@ -20,8 +20,17 @@ interface LiveActivityConfig {
   regions: {
     lockScreen?: IRNode;
     dynamicIsland?: {
+      // Compact regions
       compact?: IRNode;
+      compactLeading?: IRNode;
+      compactTrailing?: IRNode;
+      // Expanded regions
       expanded?: IRNode;
+      expandedLeading?: IRNode;
+      expandedTrailing?: IRNode;
+      expandedBottom?: IRNode;
+      expandedCenter?: IRNode;
+      // Minimal
       minimal?: IRNode;
     };
   };
@@ -81,19 +90,31 @@ function generateActivityViews(config: LiveActivityConfig, activityType: string)
     : 'Text("Activity")';
 
   // Generate Dynamic Island views from IR nodes
-  const compactLeadingView = regions.dynamicIsland?.compact
-    ? emitNodeForActivity(regions.dynamicIsland.compact, 16).trimStart()
+  // Compact regions (fallback to generic 'compact' if specific regions not provided)
+  const compactLeadingView = (regions.dynamicIsland?.compactLeading || regions.dynamicIsland?.compact)
+    ? emitNodeForActivity(regions.dynamicIsland.compactLeading || regions.dynamicIsland.compact!, 16).trimStart()
     : 'Text("•")';
+
+  const compactTrailingView = regions.dynamicIsland?.compactTrailing
+    ? emitNodeForActivity(regions.dynamicIsland.compactTrailing, 16).trimStart()
+    : 'Text("")';
+
+  // Expanded regions (fallback to generic 'expanded' if specific regions not provided)
+  const expandedLeadingView = (regions.dynamicIsland?.expandedLeading || regions.dynamicIsland?.expanded)
+    ? emitNodeForActivity(regions.dynamicIsland.expandedLeading || regions.dynamicIsland.expanded!, 20).trimStart()
+    : 'Text("Expanded")';
+
+  const expandedTrailingView = regions.dynamicIsland?.expandedTrailing
+    ? emitNodeForActivity(regions.dynamicIsland.expandedTrailing, 20).trimStart()
+    : 'Text("")';
+
+  const expandedBottomView = regions.dynamicIsland?.expandedBottom
+    ? emitNodeForActivity(regions.dynamicIsland.expandedBottom, 20).trimStart()
+    : 'Text("")';
 
   const minimalView = regions.dynamicIsland?.minimal
     ? emitNodeForActivity(regions.dynamicIsland.minimal, 16).trimStart()
     : 'Text("-")';
-
-  // For expanded view, we'll use the full expanded node
-  // If not provided, create a default expanded view
-  const expandedView = regions.dynamicIsland?.expanded
-    ? emitNodeForActivity(regions.dynamicIsland.expanded, 20).trimStart()
-    : 'Text("Expanded")';
 
   return `import ActivityKit
 import SwiftUI
@@ -107,22 +128,22 @@ struct ${activityType}ActivityWidget: Widget {
             DynamicIsland {
                 // Expanded leading region
                 DynamicIslandExpandedRegion(.leading) {
-                    ${expandedView}
+                    ${expandedLeadingView}
                 }
 
                 // Expanded trailing region
                 DynamicIslandExpandedRegion(.trailing) {
-                    Text("")
+                    ${expandedTrailingView}
                 }
 
                 // Expanded bottom region
                 DynamicIslandExpandedRegion(.bottom) {
-                    Text("")
+                    ${expandedBottomView}
                 }
             } compactLeading: {
                 ${compactLeadingView}
             } compactTrailing: {
-                Text("")
+                ${compactTrailingView}
             } minimal: {
                 ${minimalView}
             }

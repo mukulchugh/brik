@@ -13,4 +13,23 @@ module.exports = {
     '^@brik/target-compose$': '<rootDir>/packages/brik-target-compose/src',
     '^@brik/test-utils$': '<rootDir>/packages/brik-test-utils/src',
   },
+  transform: {
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        tsconfig: {
+          target: 'ES2021',
+          module: 'CommonJS',
+          moduleResolution: 'Node',
+          esModuleInterop: true,
+          skipLibCheck: true,
+          resolveJsonModule: true,
+        },
+      },
+    ],
+  },
+  transformIgnorePatterns: [
+    'node_modules/(?!(fs-extra|@babel|glob)/)',
+  ],
+  extensionsToTreatAsEsm: [],
 };
