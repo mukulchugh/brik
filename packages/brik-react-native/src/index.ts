@@ -246,3 +246,6 @@ export * from './widget-manager';
 
 // Re-export core error handling
 export * from '@brik/core';
+
+// Re-export Hot Reload
+export { useBrikHotReload, enableBrikHotReload } from './useBrikHotReload';

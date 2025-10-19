@@ -50,15 +50,21 @@
   "dependencies": {
     "@brik/compiler": "workspace:*",
     "@brik/schemas": "workspace:*",
+    "@brik/target-compose": "workspace:*",
+    "@brik/target-swiftui": "workspace:*",
     "chalk": "^4.1.2",
+    "chokidar": "^4.0.3",
     "commander": "^12.1.0",
+    "debounce": "^2.2.0",
     "fs-extra": "^11.2.0",
     "ora": "^5.4.1",
+    "ws": "^8.18.3",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.14.11",
+    "@types/ws": "^8.18.1",
     "typescript": "^5.5.4"
   }
 }

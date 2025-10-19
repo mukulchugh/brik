@@ -8,6 +8,7 @@ import path from 'path';
 import { setupAndroidWidget } from './android-widget-setup';
 import { setupIOSWidget } from './ios-widget-setup';
 import { getMainAppBundleId } from './xcode-utils';
+import { BrikHotReloader, createHotReloadClient } from './hot-reload';
 
 const program = new Command();
 program.name('brik').description('Brik CLI – Write once, run native').version('0.1.0');
@@ -215,6 +216,51 @@ program
       console.log('\n✅ Android widget setup complete!');
     } catch (error) {
       console.error('❌ Android setup failed:', error);
+      process.exit(1);
+    }
+  });
+
+program
+  .command('watch')
+  .alias('dev')
+  .description('Start development server with hot reload for widgets and Live Activities')
+  .option('-p, --platform <platform>', 'ios|android|all', 'all')
+  .option('--as-widget', 'mark roots as widgets', false)
+  .option('-o, --out-dir <dir>', 'output directory', '.brik')
+  .option('--port <port>', 'WebSocket server port', '8089')
+  .option('--auto-reload', 'Auto-reload native widgets', false)
+  .option('-v, --verbose', 'verbose output', false)
+  .action(async (opts) => {
+    try {
+      console.log('🚀 Starting Brik development server...\n');
+
+      const reloader = new BrikHotReloader({
+        projectRoot: process.cwd(),
+        platform: opts.platform as 'ios' | 'android' | 'all',
+        asWidget: opts.asWidget,
+        outDir: opts.outDir,
+        verbose: opts.verbose,
+        port: parseInt(opts.port),
+        autoReloadNative: opts.autoReload,
+      });
+
+      await reloader.start();
+
+      // Handle graceful shutdown
+      process.on('SIGINT', async () => {
+        await reloader.stop();
+        process.exit(0);
+      });
+
+      process.on('SIGTERM', async () => {
+        await reloader.stop();
+        process.exit(0);
+      });
+
+      // Keep the process alive
+      process.stdin.resume();
+    } catch (error) {
+      console.error('❌ Failed to start hot reload:', error);
       process.exit(1);
     }
   });

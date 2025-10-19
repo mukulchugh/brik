@@ -45,7 +45,9 @@
   },
   "dependencies": {
     "@brik/core": "workspace:*",
-    "@brik/schemas": "workspace:*"
+    "@brik/schemas": "workspace:*",
+    "@types/fs-extra": "^11.0.4",
+    "fs-extra": "^11.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.14.11",
