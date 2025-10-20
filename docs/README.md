@@ -5,60 +5,72 @@
 ## 📚 User Guides
 
 ### Getting Started
-- **[Getting Started](./GETTING_STARTED.md)** - Quick start guide
-- **[Installation Guide](./guides/INSTALLATION.md)** - Detailed installation
-- **[Widget Setup Guide](./WIDGET_SETUP_GUIDE.md)** - Complete widget setup
+- **[Getting Started](./getting-started.md)** - Quick start guide
+- **[Installation Guide](./guides/installation.md)** - Detailed installation
+- **[Widget Setup Guide](./guides/widget-setup-guide.md)** - Complete widget setup
+- **[Mise Setup Guide](./setup/mise-guide.md)** - Tool version management
 
 ### Features
-- **[Live Activities Guide](./LIVE_ACTIVITIES_GUIDE.md)** - Live Activities + Dynamic Island
-- **[Live Activities Setup](./guides/LIVE_ACTIVITIES_SETUP.md)** - Step-by-step setup
-- **[Live Activities Backend](./guides/LIVE_ACTIVITIES_BACKEND.md)** - Server integration
-- **[Hot Reload](./HOT_RELOAD.md)** - Development hot reload
-- **[Styling & Actions](./STYLING_AND_ACTIONS.md)** - Customize widgets
+- **[Live Activities Guide](./guides/live-activities-guide.md)** - Live Activities + Dynamic Island
+- **[Live Activities Setup](./guides/live-activities-setup.md)** - Step-by-step setup
+- **[Live Activities Backend](./guides/live-activities-backend.md)** - Server integration
+- **[Live Activities Reference](./guides/live-activities.md)** - Complete reference
+- **[Hot Reload](./hot-reload.md)** - Development hot reload
+- **[Styling & Actions](./technical/styling-and-actions.md)** - Customize widgets
 
 ### Platform-Specific
-- **[Android ProGuard Setup](./guides/ANDROID_PROGUARD_SETUP.md)** - Release builds
+- **[Android ProGuard Setup](./guides/android-proguard-setup.md)** - Release builds
+- **[Run Guide](./guides/run-guide.md)** - Running examples
 
 ## 🏗️ Technical Documentation
 
 ### Architecture
-- **[Architecture](./ARCHITECTURE.md)** - System design
-- **[IR Specification](./IR_SPEC.md)** - IR format
-- **[Component Mappings](./MAPPINGS.md)** - React to native
+- **[Architecture](./architecture.md)** - System design
+- **[IR Specification](./technical/ir-spec.md)** - IR format
+- **[Component Mappings](./technical/mappings.md)** - React to native
 
 ### Integration
-- **[Backend Integration](./BACKEND_INTEGRATION.md)** - Server-side setup
+- **[Backend Integration](./backend-integration.md)** - Server-side setup
 
 ## 🧪 Testing
 
-- **[E2E Testing Plan](./testing/E2E_TESTING_PLAN.md)** - Testing strategy
-- **[Maestro Quick Start](./testing/MAESTRO_QUICK_START.md)** - UI testing
-- **[Testing Guide](./guides/TESTING_GUIDE.md)** - Test instructions
-- **[Run Guide](./guides/RUN_GUIDE.md)** - Running examples
+- **[E2E Testing Plan](./testing/e2e-testing-plan.md)** - Testing strategy
+- **[Maestro Quick Start](./testing/maestro-quick-start.md)** - UI testing
+- **[Testing Guide](./guides/testing-guide.md)** - Test instructions
+- **[Testing README](./testing/README.md)** - Testing overview
 
 ## 📦 Package Management
 
-- **[Setup Complete](./setup/SETUP_COMPLETE.md)** - npm publishing
-- **[Package Analysis](./setup/PACKAGE_MANAGEMENT_ANALYSIS.md)** - Monorepo strategy
+- **[Setup Complete](./setup/setup-complete.md)** - npm publishing
+- **[Package Analysis](./setup/package-management-analysis.md)** - Monorepo strategy
 - **[Quick Reference](./setup/README.md)** - Publishing commands
 
 ## 📊 Status & Roadmap
 
-- **[Current Status](./status/CURRENT_STATUS.md)** - Development progress
-- **[Roadmap](./ROADMAP.md)** - Future plans
-- **[Contributing](./CONTRIBUTING.md)** - How to contribute
-- **[Security](./SECURITY.md)** - Security policy
+- **[Current Status](./status/current-status.md)** - Development progress
+- **[v0.3.0 Status](./status/v0.3.0-status.md)** - Release status
+- **[Roadmap](./roadmap.md)** - Future plans
+- **[Contributing](./contributing.md)** - How to contribute
+- **[Security](./security.md)** - Security policy
 
-## 🔍 Release Documentation
+## 🔍 Internal Documentation
 
-- **[Release Verification](../FINAL_RELEASE_VERIFICATION.md)** - v0.3.0 technical assessment
-- **[Codebase Review](./CODEBASE_REVIEW.md)** - Code quality
-- **[Validation Summary](./VALIDATION_SUMMARY.md)** - Feature validation
+Release and validation documentation (for maintainers):
+- **[Final Release Verification](./internal/final-release-verification.md)** - v0.3.0 technical assessment
+- **[Competitive Validation Report](./internal/competitive-validation-report.md)** - Market validation
+- **[Example Apps Validation](./internal/example-apps-validation.md)** - App testing results
+- **[Codebase Review](./internal/codebase-review.md)** - Code quality
+- **[Validation Summary](./internal/validation-summary.md)** - Feature validation
 
 ## Quick Links
 
 ### Installation
 ```bash
+# Using mise (recommended)
+mise install
+mise run setup
+
+# Manual
 pnpm add @brik/react-native @brik/cli
 ```
 
@@ -117,17 +129,13 @@ await Brik.endActivity(activity.id);
 
 ## 📱 Example Apps
 
-- **[brik-expo-app](../examples/brik-expo-app/)** - Expo + Weather widget (ready to run)
-- **[brik-example-app](../examples/brik-example-app/)** - React Native CLI example
+- **[brik-expo](../examples/brik-expo/)** - Expo + Old Architecture
+- **[brik-expo-arch](../examples/brik-expo-arch/)** - Expo + New Architecture
+- **[brik-rn](../examples/brik-rn/)** - React Native CLI + New Architecture
+- **[brik-rn-arch](../examples/brik-rn-arch/)** - React Native CLI + Old Architecture
 
 ## 💬 Support
 
 - **Issues**: [GitHub Issues](https://github.com/brikjs/brik/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/brikjs/brik/discussions)
 - **Main README**: [../README.md](../README.md)
-
-
-
-
-
-

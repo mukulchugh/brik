@@ -86,7 +86,7 @@ cd examples/brik-rn-arch/ios && pod install && cd ../../..
 # Android: Auto-linked (no additional setup)
 ```
 
-For complete installation instructions, see [`docs/guides/INSTALLATION.md`](./docs/guides/INSTALLATION.md).
+For complete installation instructions, see [`docs/guides/installation.md`](./docs/guides/installation.md).
 
 ## Quick Start
 
@@ -191,7 +191,7 @@ function WeatherScreen() {
 }
 ```
 
-See [`docs/WIDGET_SETUP_GUIDE.md`](./docs/WIDGET_SETUP_GUIDE.md) for complete setup instructions.
+See [`docs/guides/widget-setup-guide.md`](./docs/guides/widget-setup-guide.md) for complete setup instructions.
 
 ## Deep links and actions
 
@@ -241,7 +241,7 @@ See [`docs/WIDGET_SETUP_GUIDE.md`](./docs/WIDGET_SETUP_GUIDE.md) for complete se
 - **Ask Questions**: [GitHub Discussions](https://github.com/brikjs/brik/discussions)
 - **Weekly Updates**: Bug fix releases (v0.2.1, v0.2.2, etc.)
 
-See [`docs/internal/RELEASE_READINESS_ASSESSMENT.md`](./docs/internal/RELEASE_READINESS_ASSESSMENT.md) for detailed assessment and validation checklist.
+See [`docs/internal/release-readiness-assessment.md`](./docs/internal/release-readiness-assessment.md) for detailed assessment and validation checklist.
 
 ---
 
@@ -278,7 +278,7 @@ ActivityKit (iOS 16.1+)
 ✅ **Complete UI Regions**: Lock screen, Dynamic Island (compact/expanded/minimal)
 ✅ **Error Handling**: Comprehensive error codes and validation
 
-See [`docs/LIVE_ACTIVITIES_GUIDE.md`](./docs/LIVE_ACTIVITIES_GUIDE.md) for complete usage guide.
+See [`docs/guides/live-activities-guide.md`](./docs/guides/live-activities-guide.md) for complete usage guide.
 
 ---
 
@@ -308,19 +308,19 @@ Brik is a monorepo containing 10 publishable npm packages:
 ## Documentation
 
 ### User Guides
-- **Getting Started:** [`docs/GETTING_STARTED.md`](./docs/GETTING_STARTED.md)
-- **Live Activities Guide:** [`docs/LIVE_ACTIVITIES_GUIDE.md`](./docs/LIVE_ACTIVITIES_GUIDE.md) - Complete implementation guide
-- **Widget Setup Guide:** [`docs/WIDGET_SETUP_GUIDE.md`](./docs/WIDGET_SETUP_GUIDE.md)
-- **Installation Guide:** [`docs/guides/INSTALLATION.md`](./docs/guides/INSTALLATION.md)
-- **Architecture:** [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md)
+- **Getting Started:** [`docs/getting-started.md`](./docs/getting-started.md)
+- **Live Activities Guide:** [`docs/guides/live-activities-guide.md`](./docs/guides/live-activities-guide.md) - Complete implementation guide
+- **Widget Setup Guide:** [`docs/guides/widget-setup-guide.md`](./docs/guides/widget-setup-guide.md)
+- **Installation Guide:** [`docs/guides/installation.md`](./docs/guides/installation.md)
+- **Architecture:** [`docs/architecture.md`](./docs/architecture.md)
 
 ### Package Management & Publishing
-- **Setup Guide:** [`docs/setup/SETUP_COMPLETE.md`](./docs/setup/SETUP_COMPLETE.md) - Complete npm publishing guide
-- **Package Analysis:** [`docs/setup/PACKAGE_MANAGEMENT_ANALYSIS.md`](./docs/setup/PACKAGE_MANAGEMENT_ANALYSIS.md) - Monorepo strategy & recommendations
+- **Setup Guide:** [`docs/setup/setup-complete.md`](./docs/setup/setup-complete.md) - Complete npm publishing guide
+- **Package Analysis:** [`docs/setup/package-management-analysis.md`](./docs/setup/package-management-analysis.md) - Monorepo strategy & recommendations
 - **Quick Reference:** [`docs/setup/README.md`](./docs/setup/README.md) - Publishing commands & status
 
 ### Project Status
-- **Current Status:** [`docs/status/PROJECT_STATUS.md`](./docs/status/PROJECT_STATUS.md)
+- **Current Status:** [`docs/status/current-status.md`](./docs/status/current-status.md)
 
 ---
 
@@ -378,8 +378,8 @@ pnpm version-packages
 pnpm release
 ```
 
-See [`docs/setup/SETUP_COMPLETE.md`](./docs/setup/SETUP_COMPLETE.md) for detailed publishing instructions.
+See [`docs/setup/setup-complete.md`](./docs/setup/setup-complete.md) for detailed publishing instructions.
 
 ### Contributing
 
-See [`docs/CONTRIBUTING.md`](./docs/CONTRIBUTING.md) for contribution guidelines.
+See [`docs/contributing.md`](./docs/contributing.md) for contribution guidelines.

@@ -8,19 +8,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+
+      - name: Install mise
+        uses: jdx/mise-action@v2
         with:
-          version: 9
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm -w build
-      - run: echo "Release via Changesets can be added later"
+          version: 2025.9.18
 
+      - name: Install tools via mise
+        run: |
+          mise install
+          mise trust
 
+      - name: Verify tool versions
+        run: mise current
 
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
+      - name: Build packages
+        run: pnpm build
 
+      - name: Build widgets
+        run: mise run widgets
 
+      - name: Create release
+        run: echo "Release via Changesets can be added later"

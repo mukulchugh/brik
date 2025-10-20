@@ -11,55 +11,115 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+
+      - name: Install mise
+        uses: jdx/mise-action@v2
         with:
-          version: 9
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm lint
-      - run: pnpm typecheck
-      - run: pnpm test -- --ci --runInBand
-      - run: pnpm -w build
+          version: 2025.9.18
+
+      - name: Install tools via mise
+        run: |
+          mise install
+          mise trust
+
+      - name: Verify tool versions
+        run: mise current
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type check
+        run: pnpm typecheck
+
+      - name: Run tests
+        run: pnpm test -- --ci --runInBand
+
+      - name: Build packages
+        run: pnpm build
+
+      - name: Build widgets
+        run: mise run widgets
 
   build-ios:
     runs-on: macos-14
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+
+      - name: Install mise
+        uses: jdx/mise-action@v2
         with:
-          version: 9
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm -w build
-      # Placeholder iOS build; later replaced with example app build
-      - run: echo "iOS build placeholder"
+          version: 2025.9.18
+
+      - name: Install tools via mise
+        run: |
+          mise install
+          mise trust
+
+      - name: Verify tool versions
+        run: mise current
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm build
+
+      - name: Build widgets
+        run: mise run widgets
+
+      - name: Install CocoaPods
+        run: |
+          cd examples/brik-rn-arch/ios
+          pod install --repo-update
+          cd ../../..
+
+      - name: Build iOS example app (brik-rn-arch)
+        run: |
+          cd examples/brik-rn-arch/ios
+          xcodebuild -workspace BrikRnArch.xcworkspace \
+            -scheme BrikRnArch \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            build \
+            CODE_SIGNING_ALLOWED=NO
 
   build-android:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+
+      - name: Install mise
+        uses: jdx/mise-action@v2
         with:
-          version: 9
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm -w build
-      # Placeholder Android build; later replaced with example app build
-      - run: echo "Android build placeholder"
+          version: 2025.9.18
 
+      - name: Install tools via mise
+        run: |
+          mise install
+          mise trust
 
+      - name: Verify tool versions
+        run: mise current
 
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
 
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
+      - name: Build packages
+        run: pnpm build
 
+      - name: Build widgets
+        run: mise run widgets
+
+      - name: Build Android example app (brik-rn-arch)
+        run: |
+          cd examples/brik-rn-arch/android
+          ./gradlew assembleDebug
