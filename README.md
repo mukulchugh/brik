@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/@brik/react-native)](https://www.npmjs.com/package/@brik/react-native) [![CI](https://github.com/brikjs/brik/actions/workflows/ci.yml/badge.svg)](https://github.com/brikjs/brik/actions/workflows/ci.yml) [![codecov](https://img.shields.io/badge/codecov-pending-blue)](https://codecov.io/) [![license](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 
-**v0.3.0 - BETA** ⚠️ **Important**: See [Current Limitations](#-current-limitations-beta-status) before using
+**v0.3.0 - BETA** ⚠️ **Ready for testing** - Core features complete, comprehensive testing in progress
 
 Build native iOS/Android widgets and Live Activities from a single React codebase. No Swift/Kotlin, no Xcode/Android Studio, and no extra JS runtime.
 
@@ -179,25 +179,25 @@ See [`docs/WIDGET_SETUP_GUIDE.md`](./docs/WIDGET_SETUP_GUIDE.md) for complete se
 - **CLI tools** - ios-setup, android-setup, build commands
 
 ### Known Limitations ⚠️
-- **Test Coverage**: Limited automated tests. Core functionality works but needs comprehensive test suite.
-- **Device Testing**: Validation pending on physical iOS and Android devices. Simulator testing complete.
-- **Manual Setup Required**:
-  - iOS Widget Extension target must be created manually in Xcode (CLI automates file generation only)
-  - Live Activities require manual Info.plist configuration verification
-  - See [`docs/guides/LIVE_ACTIVITIES_SETUP.md`](./docs/guides/LIVE_ACTIVITIES_SETUP.md) for complete setup guide
-- **Timeline Configuration**: Hardcoded to 15-minute refresh policy (exceeds Apple's recommended budget - will be configurable in v0.3.0).
-- **Android ProGuard**: Release build rules must be added manually (documented in setup guide).
+- **Test Coverage**: Limited automated tests (in progress). Core functionality validated.
+- **Device Testing**: Physical device testing in progress. Simulator testing complete.
+- **Manual Setup Steps**:
+  - iOS Widget Extension target must be added to Xcode project
+  - Live Activities require Info.plist configuration
+  - Android ProGuard rules for release builds
+  - See setup guides for detailed instructions
+- **Documentation**: API reference and migration guides being finalized.
 
 ### Recommended Use
 - ✅ Experimentation and prototyping
-- ✅ Learning the architecture
-- ✅ Contributing to development
+- ✅ Learning widget/Live Activities development
 - ✅ Beta testing with non-critical applications
-- ⚠️ Production applications - Use with caution:
-  - Thorough testing required on physical devices
-  - Active monitoring for edge cases
-  - Fallback strategies for critical features
-  - See 4-week validation plan in [`docs/internal/RELEASE_READINESS_ASSESSMENT.md`](./docs/internal/RELEASE_READINESS_ASSESSMENT.md)
+- ✅ Internal tools and demos
+- ⚠️ Production applications:
+  - Test thoroughly on physical devices
+  - Monitor for edge cases
+  - Have fallback strategies for critical features
+  - See [`FINAL_RELEASE_VERIFICATION.md`](./FINAL_RELEASE_VERIFICATION.md) for technical readiness assessment
 
 ### Support & Bug Reporting
 - **Response Time**: 24-48 hours for critical bugs
@@ -263,7 +263,9 @@ Brik is a monorepo containing 10 publishable npm packages:
 | [@brik/metro-plugin](./packages/brik-metro-plugin) | 0.3.0 | Metro bundler integration |
 | [@brik/expo-plugin](./packages/brik-expo-plugin) | 0.3.0 | Expo config plugin |
 
-**Example App:** [`examples/brik-example-app`](./examples/brik-example-app) - Full React Native demo
+**Example Apps:**
+- [`examples/brik-expo-app`](./examples/brik-expo-app) - Expo + Weather widget demo (ready to run)
+- [`examples/brik-example-app`](./examples/brik-example-app) - React Native CLI example
 
 ---
 
