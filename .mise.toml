@@ -1,0 +1,137 @@
+# Brik Project - Tooling Configuration
+# This file ensures all developers use the same versions of Node, Java, Ruby, and other tools
+# Install mise: https://mise.jdx.dev/getting-started.html
+# Usage: cd to project root and run `mise install`
+
+[tools]
+# Node.js - Required for React Native, Metro bundler, and build tools
+node = "18.20.8"
+
+# Java (OpenJDK) - Required for Android builds
+java = "zulu-17.60.17.0"
+
+# Ruby - Required for CocoaPods (iOS dependency manager)
+ruby = "3.3.5"
+
+# pnpm - Fast, disk space efficient package manager
+pnpm = "9.6.0"
+1password = "latest"
+
+# Yarn - Alternative package manager (optional, for compatibility)
+# yarn = "1.22.22"
+
+[env]
+# Android SDK environment variables
+_.file = ".env"
+
+# Ensure CocoaPods uses the mise-managed Ruby
+# RUBY_CONFIGURE_OPTS = "--with-openssl-dir=$(brew --prefix openssl@3)"
+
+# Node options for larger projects
+NODE_OPTIONS = "--max-old-space-size=4096"
+
+# Java home for Android builds
+JAVA_HOME = "{{config_root}}/.mise/installs/java/zulu-17.60.17.0"
+
+# Android environment (developers should set ANDROID_HOME in their shell)
+# ANDROID_HOME = "$HOME/Library/Android/sdk"
+# ANDROID_SDK_ROOT = "$HOME/Library/Android/sdk"
+
+[tasks.install]
+description = "Install all project dependencies"
+run = """
+echo "📦 Installing dependencies..."
+pnpm install
+echo "✅ Dependencies installed!"
+"""
+
+[tasks.build]
+description = "Build all Brik packages"
+run = """
+echo "🔨 Building Brik packages..."
+pnpm build
+echo "✅ Build complete!"
+"""
+
+[tasks.test]
+description = "Run all tests"
+run = """
+echo "🧪 Running tests..."
+pnpm test
+echo "✅ Tests complete!"
+"""
+
+[tasks.pods]
+description = "Install CocoaPods for all iOS apps"
+run = """
+echo "🍎 Installing iOS dependencies..."
+for app in examples/brik-rn-arch examples/brik-rn examples/brik-expo examples/brik-expo-arch; do
+  if [ -d "$app/ios" ]; then
+    echo "Installing pods for $app..."
+    cd "$app/ios" && pod install && cd ../..
+  fi
+done
+echo "✅ CocoaPods installed!"
+"""
+
+[tasks.widgets]
+description = "Build widgets for all example apps"
+run = """
+echo "🧱 Building widgets..."
+cd packages/brik-example-shared
+node ../brik-cli/dist/index.js build --platform all --as-widget ./src/widgets
+echo "✅ Widgets built!"
+"""
+
+[tasks.setup]
+description = "Complete project setup (install + build + widgets + pods)"
+run = """
+echo "🚀 Setting up Brik project..."
+mise run install
+mise run build
+mise run widgets
+mise run pods
+echo "🎉 Setup complete! You're ready to start developing."
+"""
+
+[tasks.clean]
+description = "Clean all build artifacts and node_modules"
+run = """
+echo "🧹 Cleaning project..."
+rm -rf node_modules
+rm -rf packages/*/node_modules
+rm -rf packages/*/dist
+rm -rf examples/*/node_modules
+rm -rf .brik
+find . -name ".turbo" -type d -exec rm -rf {} +
+find . -name "*.tsbuildinfo" -delete
+echo "✅ Project cleaned!"
+"""
+
+[tasks.dev-rn-arch]
+description = "Start Metro for brik-rn-arch on port 8081"
+run = "cd examples/brik-rn-arch && npm start -- --port 8081"
+
+[tasks.dev-rn]
+description = "Start Metro for brik-rn on port 8082"
+run = "cd examples/brik-rn && npm start -- --port 8082"
+
+[tasks.dev-expo]
+description = "Start Metro for brik-expo on port 8083"
+run = "cd examples/brik-expo && npx expo start --port 8083"
+
+[tasks.dev-expo-arch]
+description = "Start Metro for brik-expo-arch on port 8084"
+run = "cd examples/brik-expo-arch && npx expo start --port 8084"
+
+[tasks.dev-all]
+description = "Start all Metro servers in parallel (requires tmux or separate terminals)"
+run = """
+echo "🚀 Starting all Metro servers..."
+echo "Run these commands in separate terminals:"
+echo ""
+echo "Terminal 1: mise run dev-rn-arch"
+echo "Terminal 2: mise run dev-rn"
+echo "Terminal 3: mise run dev-expo"
+echo "Terminal 4: mise run dev-expo-arch"
+"""

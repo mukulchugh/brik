@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.authors      = { 'Brik' => 'noreply@brik.dev' }
   s.source       = { :git => package['repository']['url'], :tag => "v#{s.version}" }
 
-  s.ios.deployment_target = '14.0'
+  s.ios.deployment_target = '13.4'
 
   s.source_files = 'ios/**/*.{h,m,mm,swift}'
 

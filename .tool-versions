@@ -1,0 +1,8 @@
+# Brik Project - Tool Versions
+# Compatible with both mise and asdf
+# This file is auto-read by mise from .mise.toml
+
+node 18.20.8
+java zulu-17.60.17.0
+ruby 3.3.5
+pnpm 9.6.0

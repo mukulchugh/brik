@@ -37,17 +37,53 @@ JSX/TSX → IR → platform code
 
 ## Installation
 
-```bash
-# Install packages
-pnpm add @brik/react-native @brik/cli
+### Prerequisites
 
-# iOS: Install native dependencies
-cd ios && pod install && cd ..
+Brik uses [mise](https://mise.jdx.dev/) to ensure consistent tool versions across all developers:
+
+```bash
+# Install mise (if not already installed)
+curl https://mise.run | sh
+
+# Clone the repository
+git clone https://github.com/mukulchugh/brik.git
+cd brik
+
+# Install all tools (Node.js, Java, Ruby, pnpm)
+mise install
+
+# One-command setup (installs deps, builds packages, generates widgets, installs pods)
+mise run setup
+```
+
+**Required Versions** (automatically managed by mise):
+- Node.js: `18.20.8`
+- Java (OpenJDK): `zulu-17.60.17.0`
+- Ruby: `3.3.5`
+- pnpm: `9.6.0`
+
+### Manual Installation (Without mise)
+
+```bash
+# Ensure you have the correct versions installed
+node --version  # Should be 18.20.8
+java --version  # Should be 17.0.12
+ruby --version  # Should be 3.3.5
+
+# Install packages
+pnpm install
+
+# Build all packages
+pnpm build
+
+# Build widgets
+cd packages/brik-example-shared
+node ../brik-cli/dist/index.js build --platform all --as-widget ./src/widgets
+
+# iOS: Install CocoaPods dependencies
+cd examples/brik-rn-arch/ios && pod install && cd ../../..
 
 # Android: Auto-linked (no additional setup)
-
-# Verify installation
-npx brik doctor
 ```
 
 For complete installation instructions, see [`docs/guides/INSTALLATION.md`](./docs/guides/INSTALLATION.md).
