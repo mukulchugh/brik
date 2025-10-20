@@ -1,7 +1,7 @@
 import { parse } from '@babel/parser';
 import traverse from '@babel/traverse';
 import * as t from '@babel/types';
-import { BRIK_DIR, validateRoot, type Node as IRNode, type Root as IRRoot } from '@brik/core';
+import { BRIK_DIR, validateRoot, normalizeStyle, type Node as IRNode, type Root as IRRoot } from '@brik/core';
 import fs from 'fs-extra';
 import { glob } from 'glob';
 import path from 'path';
@@ -138,123 +138,13 @@ function extractAction(attrs: (t.JSXAttribute | t.JSXSpreadAttribute)[]): any | 
   return undefined;
 }
 
-function normalizeStyle(raw?: Record<string, unknown>) {
-  if (!raw) return undefined;
-  const style: any = {};
-  const layout: any = {};
-  const typography: any = {};
-  const colors: any = {};
-  const borders: any = {};
-  const shadows: any = {};
-
-  for (const [k, v] of Object.entries(raw)) {
-    // Layout properties
-    if (
-      [
-        'flexDirection',
-        'alignItems',
-        'justifyContent',
-        'gap',
-        'padding',
-        'paddingHorizontal',
-        'paddingVertical',
-        'paddingTop',
-        'paddingRight',
-        'paddingBottom',
-        'paddingLeft',
-        'margin',
-        'marginHorizontal',
-        'marginVertical',
-        'marginTop',
-        'marginRight',
-        'marginBottom',
-        'marginLeft',
-        'width',
-        'height',
-        'minWidth',
-        'minHeight',
-        'maxWidth',
-        'maxHeight',
-        'flex',
-        'flexGrow',
-        'flexShrink',
-        'flexBasis',
-        'position',
-        'top',
-        'right',
-        'bottom',
-        'left',
-        'aspectRatio',
-        'zIndex',
-      ].includes(k)
-    ) {
-      layout[k] = v;
-    }
-    // Typography properties
-    else if (
-      [
-        'fontSize',
-        'fontWeight',
-        'fontFamily',
-        'fontStyle',
-        'color',
-        'numberOfLines',
-        'ellipsizeMode',
-        'textAlign',
-        'textTransform',
-        'lineHeight',
-        'letterSpacing',
-      ].includes(k)
-    ) {
-      typography[k] = v;
-    }
-    // Color properties
-    else if (['backgroundColor', 'opacity', 'tintColor'].includes(k)) {
-      colors[k] = v;
-    }
-    // Border properties
-    else if (
-      [
-        'borderRadius',
-        'borderTopLeftRadius',
-        'borderTopRightRadius',
-        'borderBottomLeftRadius',
-        'borderBottomRightRadius',
-        'borderWidth',
-        'borderColor',
-        'borderStyle',
-      ].includes(k)
-    ) {
-      borders[k] = v;
-    }
-    // Shadow properties
-    else if (
-      [
-        'shadowColor',
-        'shadowOpacity',
-        'shadowRadius',
-        'shadowOffsetX',
-        'shadowOffsetY',
-        'elevation',
-      ].includes(k)
-    ) {
-      shadows[k] = v;
-    }
-  }
-
-  if (Object.keys(layout).length) style.layout = layout;
-  if (Object.keys(typography).length) style.typography = typography;
-  if (Object.keys(colors).length) style.colors = colors;
-  if (Object.keys(borders).length) style.borders = borders;
-  if (Object.keys(shadows).length) style.shadows = shadows;
-
-  return Object.keys(style).length ? style : undefined;
-}
-
 function buildIRNode(node: t.JSXElement): IRNode | null {
   const name = (node.openingElement.name as t.JSXIdentifier).name;
   const attrs = node.openingElement.attributes;
-  const style = normalizeStyle(styleFromJSX(attrs));
+  const rawStyle = styleFromJSX(attrs);
+  const normalized = rawStyle ? normalizeStyle(rawStyle) : undefined;
+  // Convert empty object to undefined for IR
+  const style = normalized && Object.keys(normalized).length > 0 ? normalized : undefined;
   const action = extractAction(attrs);
 
   // Base properties for all nodes

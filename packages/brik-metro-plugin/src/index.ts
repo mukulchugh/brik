@@ -1,10 +1,9 @@
 export interface BrikMetroPluginOptions {
-  enableBabelPlugin?: boolean;
   enableTransform?: boolean;
 }
 
 export function brikMetroPlugin(options: BrikMetroPluginOptions = {}) {
-  const { enableBabelPlugin = true, enableTransform = true } = options;
+  const { enableTransform = true } = options;
 
   return (config: any) => {
     // Simple Metro config enhancement for Brik
@@ -16,11 +15,8 @@ export function brikMetroPlugin(options: BrikMetroPluginOptions = {}) {
       },
     };
 
-    // Add Babel plugin if enabled
-    if (enableBabelPlugin) {
-      // This would be handled by the babel plugin configuration
-      // in the project's babel.config.js or metro.config.js
-    }
+    // Future: Could add file watching and auto-run brik build here
+    // For now, users should run `brik build` or `brik watch` separately
 
     return mergedConfig;
   };

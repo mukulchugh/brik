@@ -58,30 +58,41 @@ export function normalizeStyle(style?: Record<string, any>): NormalizedStyle {
   const shadows: any = {};
 
   for (const [key, value] of Object.entries(style)) {
-    // Layout properties
-    if (['padding', 'paddingHorizontal', 'paddingVertical', 'paddingTop', 'paddingRight',
-         'paddingBottom', 'paddingLeft', 'margin', 'marginHorizontal', 'marginVertical',
-         'marginTop', 'marginRight', 'marginBottom', 'marginLeft', 'flex', 'flexGrow',
-         'flexShrink', 'flexBasis', 'flexDirection', 'alignItems', 'justifyContent',
-         'width', 'height', 'minWidth', 'minHeight', 'maxWidth', 'maxHeight'].includes(key)) {
+    // Layout properties (enhanced with more properties from compiler)
+    if ([
+      'padding', 'paddingHorizontal', 'paddingVertical', 'paddingTop', 'paddingRight',
+      'paddingBottom', 'paddingLeft', 'margin', 'marginHorizontal', 'marginVertical',
+      'marginTop', 'marginRight', 'marginBottom', 'marginLeft', 'flex', 'flexGrow',
+      'flexShrink', 'flexBasis', 'flexDirection', 'alignItems', 'justifyContent',
+      'width', 'height', 'minWidth', 'minHeight', 'maxWidth', 'maxHeight',
+      'gap', 'position', 'top', 'right', 'bottom', 'left', 'aspectRatio', 'zIndex'
+    ].includes(key)) {
       layout[key] = value;
     }
-    // Typography properties
-    else if (['fontSize', 'fontWeight', 'fontFamily', 'fontStyle', 'color', 'lineHeight',
-              'letterSpacing', 'textAlign', 'textTransform'].includes(key)) {
+    // Typography properties (enhanced)
+    else if ([
+      'fontSize', 'fontWeight', 'fontFamily', 'fontStyle', 'color', 'lineHeight',
+      'letterSpacing', 'textAlign', 'textTransform', 'numberOfLines', 'ellipsizeMode'
+    ].includes(key)) {
       typography[key] = value;
     }
-    // Color properties
-    else if (['backgroundColor', 'borderColor', 'tintColor'].includes(key)) {
+    // Color properties (enhanced)
+    else if (['backgroundColor', 'borderColor', 'tintColor', 'opacity'].includes(key)) {
       colors[key] = value;
     }
-    // Border properties
-    else if (['borderRadius', 'borderWidth', 'borderTopWidth', 'borderRightWidth',
-              'borderBottomWidth', 'borderLeftWidth'].includes(key)) {
+    // Border properties (enhanced)
+    else if ([
+      'borderRadius', 'borderTopLeftRadius', 'borderTopRightRadius',
+      'borderBottomLeftRadius', 'borderBottomRightRadius',
+      'borderWidth', 'borderTopWidth', 'borderRightWidth',
+      'borderBottomWidth', 'borderLeftWidth', 'borderStyle'
+    ].includes(key)) {
       borders[key] = value;
     }
-    // Shadow properties
-    else if (['shadowColor', 'shadowOpacity', 'shadowRadius', 'elevation'].includes(key)) {
+    // Shadow properties (enhanced)
+    else if ([
+      'shadowColor', 'shadowOpacity', 'shadowRadius', 'shadowOffsetX', 'shadowOffsetY', 'elevation'
+    ].includes(key)) {
       shadows[key] = value;
     } else if (key === 'shadowOffset' && typeof value === 'object') {
       shadows.shadowOffsetX = value.width || 0;
