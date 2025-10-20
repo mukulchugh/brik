@@ -46,7 +46,8 @@
     "expo": ">=49.0.0"
   },
   "dependencies": {
-    "@brik/compiler": "workspace:*"
+    "@brik/compiler": "workspace:*",
+    "@expo/config-plugins": "^9.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.14.11",

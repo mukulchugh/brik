@@ -106,7 +106,11 @@ export const LayoutStyleSchema = z.object({
 
 export const TypographyStyleSchema = z.object({
   fontSize: z.number().optional(),
-  fontWeight: z.union([z.literal('400'), z.literal('500'), z.literal('700')]).optional(),
+  fontWeight: z.union([
+    z.literal('100'), z.literal('200'), z.literal('300'), z.literal('400'),
+    z.literal('500'), z.literal('600'), z.literal('700'), z.literal('800'), z.literal('900'),
+    z.literal('normal'), z.literal('bold')
+  ]).optional(),
   fontFamily: z.string().optional(),
   fontStyle: z.union([z.literal('normal'), z.literal('italic')]).optional(),
   color: z.string().optional(),
