@@ -13,12 +13,7 @@ interface HotReloadConfig {
 }
 
 export function useBrikHotReload(config: HotReloadConfig = {}) {
-  const {
-    url = 'ws://localhost:8089',
-    enabled = __DEV__,
-    onReload,
-    onError
-  } = config;
+  const { url = 'ws://localhost:8089', enabled = __DEV__, onReload, onError } = config;
 
   useEffect(() => {
     if (!enabled) {
@@ -49,7 +44,7 @@ export function useBrikHotReload(config: HotReloadConfig = {}) {
               console.log('[Brik] Reloading widgets...', {
                 components: message.components,
                 buildTime: message.buildTime,
-                changedPath: message.changedPath
+                changedPath: message.changedPath,
               });
 
               // Trigger widget refresh
@@ -82,7 +77,7 @@ export function useBrikHotReload(config: HotReloadConfig = {}) {
 
         ws.onerror = (error) => {
           console.warn('[Brik] Hot reload connection error:', error);
-          onError?.(error as Error);
+          onError?.(new Error('WebSocket connection error'));
         };
 
         ws.onclose = () => {
@@ -92,7 +87,9 @@ export function useBrikHotReload(config: HotReloadConfig = {}) {
           // Attempt to reconnect
           if (reconnectAttempts < maxReconnectAttempts) {
             reconnectAttempts++;
-            console.log(`[Brik] Reconnecting in ${reconnectDelay}ms... (attempt ${reconnectAttempts}/${maxReconnectAttempts})`);
+            console.log(
+              `[Brik] Reconnecting in ${reconnectDelay}ms... (attempt ${reconnectAttempts}/${maxReconnectAttempts})`,
+            );
             reconnectTimeout = setTimeout(connect, reconnectDelay);
           } else {
             console.warn('[Brik] Max reconnection attempts reached');
