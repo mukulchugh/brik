@@ -9,9 +9,11 @@
 ## 🎯 TL;DR - What's Done & What's Left
 
 ### ✅ MAJOR WIN: Native Module Complete!
+
 **The big blocker is resolved!** Full ActivityKit integration (1,454 lines) merged to main today.
 
 ### ❌ Two Critical Blockers Remain:
+
 1. **Test Infrastructure** - Jest config broken (4-8 hours to fix)
 2. **Device Testing** - Never tested on real device (4-8 hours manual testing)
 
@@ -24,12 +26,14 @@
 ### 1. Native Module Implementation (Just Merged!)
 
 **Files**:
+
 - `BrikActivityRegistry.swift` (156 lines) - Registry system
 - `BrikLiveActivities.swift` (220 lines) - Full ActivityKit integration
 - `BrikLiveActivities.m` - Objective-C bridge
 - `BrikReactNative.podspec` - CocoaPods integration
 
 **Features**:
+
 - ✅ Real `Activity.request()` calls (not mocks!)
 - ✅ Registry pattern for dynamic activity types
 - ✅ Auto-registration on app startup
@@ -41,11 +45,13 @@
 ### 2. Code Generation
 
 **Enhanced**:
+
 - `live-activities.ts` (+133 lines) - Generates concrete handlers
 - Auto-registration code for each activity type
 - Type-safe attribute extraction from JS
 
 **Generated Example**:
+
 - `OrderTrackingActivity.swift` (200 lines) - Complete working example
   - `OrderTrackingAttributes` struct
   - `OrderTrackingActivityWidget` views
@@ -54,10 +60,12 @@
 ### 3. Documentation
 
 **New** (771 lines):
+
 - `NATIVE_MODULE_IMPLEMENTATION.md` (408 lines) - Technical deep dive
 - `TESTING_GUIDE.md` (363 lines) - Step-by-step Xcode testing
 
 **Existing** (3,500+ lines):
+
 - Architecture, IR spec, mappings, roadmap, security, contributing guides
 
 ### 4. Build System
@@ -76,16 +84,19 @@
 **Problem**: Tests exist but broken due to Jest/TypeScript config
 
 **Error**:
+
 ```
 SyntaxError: Cannot use import statement outside a module
 ```
 
 **Broken Tests**:
+
 - `@brik/compiler/__tests__/compiler.test.ts` (1 test)
 - `@brik/target-swiftui/__tests__/gen.test.ts` (1 test)
 - `@brik/target-compose/__tests__/gen.test.ts` (1 test)
 
 **Fix Needed**:
+
 1. Configure Jest for TypeScript/ESM
 2. Add `ts-jest` or update Jest config
 3. Verify all 3 tests pass
@@ -101,6 +112,7 @@ SyntaxError: Cannot use import statement outside a module
 **Problem**: Native module never tested on real device or simulator
 
 **What's Untested**:
+
 - ❌ App builds in Xcode
 - ❌ Activity appears on lock screen
 - ❌ Dynamic Island works
@@ -113,6 +125,7 @@ SyntaxError: Cannot use import statement outside a module
 **How to Test**: Follow `TESTING_GUIDE.md`
 
 **Steps**:
+
 1. Open Xcode workspace
 2. Add native module files (if needed)
 3. Build on iOS 16.1+ simulator
@@ -130,6 +143,7 @@ SyntaxError: Cannot use import statement outside a module
 ### 1. Button Actions Not Implemented
 
 **Location**:
+
 ```typescript
 // SwiftUI
 Button("Label", action: { /* TODO: onPress */ })
@@ -147,6 +161,7 @@ Button(onClick = { /* TODO: onPress */ }, ...)
 ### 2. Outdated Documentation
 
 **Files**:
+
 - `NEXT_STEPS.md` - Still says "native module pending"
 - `COMPLETION_SUMMARY.md` - Warns about stub
 
@@ -156,21 +171,22 @@ Button(onClick = { /* TODO: onPress */ }, ...)
 
 ## 📊 Package Status
 
-| Package | Build | Tests | Notes |
-|---------|-------|-------|-------|
-| `@brik/cli` | ✅ | ⚠️ None | Ready |
-| `@brik/compiler` | ✅ | ❌ Broken | Fix Jest |
-| `@brik/core` | ✅ | ⚠️ None | Ready |
-| `@brik/react-native` | ✅ | ⚠️ None | Needs device test |
-| `@brik/target-swiftui` | ✅ | ❌ Broken | Fix Jest |
-| `@brik/target-compose` | ✅ | ❌ Broken | Fix Jest |
-| `@brik/schemas` | ✅ | ⚠️ None | Ready |
-| `@brik/expo-plugin` | ✅ | ⚠️ None | Ready |
-| `@brik/babel-plugin` | ✅ | ⚠️ None | Ready |
-| `@brik/metro-plugin` | ✅ | ⚠️ None | Ready |
-| `@brik/test-utils` | ✅ | ⚠️ None | Ready |
+| Package                | Build | Tests     | Notes             |
+| ---------------------- | ----- | --------- | ----------------- |
+| `@brik/cli`            | ✅    | ⚠️ None   | Ready             |
+| `@brik/compiler`       | ✅    | ❌ Broken | Fix Jest          |
+| `@brik/core`           | ✅    | ⚠️ None   | Ready             |
+| `@brik/react-native`   | ✅    | ⚠️ None   | Needs device test |
+| `@brik/target-swiftui` | ✅    | ❌ Broken | Fix Jest          |
+| `@brik/target-compose` | ✅    | ❌ Broken | Fix Jest          |
+| `@brik/schemas`        | ✅    | ⚠️ None   | Ready             |
+| `@brik/expo-plugin`    | ✅    | ⚠️ None   | Ready             |
+| `@brik/babel-plugin`   | ✅    | ⚠️ None   | Ready             |
+| `@brik/metro-plugin`   | ✅    | ⚠️ None   | Ready             |
+| `@brik/test-utils`     | ✅    | ⚠️ None   | Ready             |
 
 **Summary**:
+
 - ✅ 11/11 packages build
 - ❌ 3/11 have broken tests
 - ⚠️ 8/11 have no tests (pass with `--passWithNoTests`)
@@ -235,17 +251,20 @@ After v0.2.1:
 ## 💡 Immediate Next Steps
 
 ### Today:
+
 1. Fix Jest configuration
 2. Run tests, verify pass
 3. Manual Xcode testing
 
 ### This Week:
+
 4. Expand test coverage
 5. Set up CI/CD
 6. Update documentation
 7. Fix button actions
 
 ### Next Week:
+
 8. Final testing validation
 9. Prepare npm publication
 10. Tag and release v0.2.1

@@ -1,4 +1,4 @@
-package com.brik
+package com.brik.reactnative
 
 import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.NativeModule
@@ -6,13 +6,16 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.uimanager.ViewManager
 
 /**
- * BrikWidgetPackage
+ * BrikPackage
  *
- * React Native package for Brik widget support
+ * React Native package that registers Brik widget native modules.
+ * This package is automatically detected by React Native autolinking.
  */
-class BrikWidgetPackage : ReactPackage {
+class BrikPackage : ReactPackage {
     override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> {
-        return listOf(BrikWidgetManager(reactContext))
+        return listOf(
+            BrikWidgetManager(reactContext)
+        )
     }
 
     override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
