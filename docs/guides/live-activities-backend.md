@@ -258,7 +258,7 @@ APNs requires a specific JSON structure for Live Activities updates.
 
 **Installation:**
 ```bash
-npm install apn jsonwebtoken
+pnpm add apn jsonwebtoken
 ```
 
 **Implementation:**

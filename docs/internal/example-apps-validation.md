@@ -238,7 +238,7 @@ expo run:ios --device "iPhone 15 Pro"
 - iOS 16.1+ simulator
 
 # Run on simulator
-npm run ios -- --simulator="iPhone 15 Pro"
+pnpm ios -- --simulator="iPhone 15 Pro"
 
 # Expected Result
 ✅ App launches
@@ -277,7 +277,7 @@ expo run:android
 - Android 12+ (API 31+) emulator
 
 # Run on emulator
-npm run android
+pnpm android
 
 # Expected Result
 ✅ App launches
@@ -363,7 +363,7 @@ expo run:android
 ```bash
 # 1. Generate native widget code
 cd examples/brik-example-app
-npm run build:native
+pnpm build:native
 
 # 2. Generate Swift/Kotlin files
 # Output: Same as Expo
@@ -372,8 +372,8 @@ npm run build:native
 # 4. Add to Android app (manual)
 
 # 5. Run app
-npm run ios
-npm run android
+pnpm ios
+pnpm android
 ```
 
 ---
@@ -408,7 +408,7 @@ expo run:ios --device "iPhone 15 Pro"
 ### iOS Simulator Test (RN CLI)
 ```bash
 cd examples/brik-example-app
-npm run ios -- --simulator="iPhone 15 Pro"
+pnpm ios -- --simulator="iPhone 15 Pro"
 ```
 
 **Validation Steps**: Same as Expo ✅
@@ -430,7 +430,7 @@ expo run:android
 ### Android Emulator Test (RN CLI)
 ```bash
 cd examples/brik-example-app
-npm run android
+pnpm android
 ```
 
 **Validation Steps**: Same as Expo ✅

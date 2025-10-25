@@ -62,11 +62,23 @@ mise run pods
 ### Development
 
 ```bash
-# Start individual Metro servers
+# Start Metro servers
 mise run dev-rn-arch      # Port 8081
 mise run dev-rn           # Port 8082
 mise run dev-expo         # Port 8083
 mise run dev-expo-arch    # Port 8084
+
+# Run on iOS Simulator
+mise run ios-rn-arch      # iPhone 15
+mise run ios-rn           # iPhone 15
+mise run ios-expo         # Default simulator
+mise run ios-expo-arch    # Default simulator
+
+# Run on Android Emulator
+mise run android-rn-arch
+mise run android-rn
+mise run android-expo
+mise run android-expo-arch
 
 # Show commands to run all servers
 mise run dev-all

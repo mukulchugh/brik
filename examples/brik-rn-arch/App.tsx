@@ -1,5 +1,5 @@
 import { BrikDemoApp } from '@brik/example-shared';
 
 export default function App() {
-  return <BrikDemoApp title="Brik Expo (New Arch)" />;
+  return <BrikDemoApp title="Brik RN (New Arch)" />;
 }

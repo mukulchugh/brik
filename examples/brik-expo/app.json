@@ -13,7 +13,18 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.brikexpo",
+      "deploymentTarget": "16.2",
+      "infoPlist": {
+        "NSSupportsLiveActivities": true
+      },
+      "entitlements": {
+        "com.apple.developer.usernotifications.time-sensitive": true,
+        "com.apple.security.application-groups": [
+          "group.com.anonymous.brikexpo"
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -21,10 +32,13 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.anonymous.brikexpo"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+    ]
   }
 }

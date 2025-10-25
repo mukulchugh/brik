@@ -35,7 +35,7 @@ Brik enables you to create home screen widgets that display data from your React
 ### 1. Install Brik Packages
 
 ```bash
-npm install @brik/react-native @brik/cli
+pnpm add @brik/react-native @brik/cli
 # or
 pnpm add @brik/react-native @brik/cli
 ```

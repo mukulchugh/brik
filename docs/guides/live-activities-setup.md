@@ -48,7 +48,7 @@ Live Activities display real-time information on the Lock Screen and Dynamic Isl
 ### Brik Packages
 
 ```bash
-npm install @brik/react-native @brik/cli
+pnpm add @brik/react-native @brik/cli
 # or
 pnpm add @brik/react-native @brik/cli
 ```

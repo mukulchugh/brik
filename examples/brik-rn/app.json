@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "brik-expo-arch",
-    "slug": "brik-expo-arch",
+    "name": "brik-rn",
+    "slug": "brik-rn",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
@@ -14,14 +14,14 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.brikexpoarch",
+      "bundleIdentifier": "com.anonymous.brikrn",
       "infoPlist": {
         "NSSupportsLiveActivities": true
       },
       "entitlements": {
         "com.apple.developer.usernotifications.time-sensitive": true,
         "com.apple.security.application-groups": [
-          "group.com.anonymous.brikexpoarch"
+          "group.com.anonymous.brikrn"
         ]
       }
     },
@@ -32,7 +32,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.brikexpoarch"
+      "package": "com.anonymous.brikrn"
     },
     "web": {
       "favicon": "./assets/favicon.png"

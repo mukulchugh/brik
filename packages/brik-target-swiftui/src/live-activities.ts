@@ -70,6 +70,7 @@ function generateActivityAttributes(config: LiveActivityConfig): string {
 
   return `import ActivityKit
 import Foundation
+import BrikReactNative
 
 struct ${activityType}Attributes: ActivityAttributes {
     public struct ContentState: Codable, Hashable {
@@ -265,18 +266,21 @@ ${dynamicAssignments}
 
 // Auto-register handler on app startup
 @available(iOS 16.1, *)
-private class ${activityType}HandlerRegistration {
-    static let register: Void = {
+@objc public class ${activityType}HandlerRegistration: NSObject {
+    @objc public static func register() {
         BrikActivityRegistry.shared.register(
             activityType: "${activityType}",
             handler: ${activityType}Handler()
         )
-    }()
-}
+    }
 
-// Ensure registration happens
-@available(iOS 16.1, *)
-private let _${activityType.toLowerCase()}HandlerInit = ${activityType}HandlerRegistration.register
+    // Force registration via Objective-C runtime
+    @objc override public class func load() {
+        if #available(iOS 16.1, *) {
+            ${activityType}HandlerRegistration.register()
+        }
+    }
+}
 `;
 }
 

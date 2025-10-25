@@ -1,5 +1,6 @@
 import ActivityKit
 import Foundation
+import BrikReactNative
 
 struct OrderTrackingAttributes: ActivityAttributes {
     public struct ContentState: Codable, Hashable {
@@ -172,15 +173,18 @@ class OrderTrackingHandler: BrikActivityHandler {
 
 // Auto-register handler on app startup
 @available(iOS 16.1, *)
-private class OrderTrackingHandlerRegistration {
-    static let register: Void = {
+@objc public class OrderTrackingHandlerRegistration: NSObject {
+    @objc public static func register() {
         BrikActivityRegistry.shared.register(
             activityType: "OrderTracking",
             handler: OrderTrackingHandler()
         )
-    }()
-}
+    }
 
-// Ensure registration happens
-@available(iOS 16.1, *)
-private let _ordertrackingHandlerInit = OrderTrackingHandlerRegistration.register
+    // Force registration via Objective-C runtime
+    @objc override public class func load() {
+        if #available(iOS 16.1, *) {
+            OrderTrackingHandlerRegistration.register()
+        }
+    }
+}

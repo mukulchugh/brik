@@ -1,17 +1,18 @@
-/**
- * Brik Expo (Old Architecture) - Expo + Old Arch
- * Tests v0.3.0 features on Expo with Old Architecture (Paper)
- */
-
+import { View, ScrollView, StyleSheet } from 'react-native';
 import { BrikDemoApp } from '@brik/example-shared';
-import React from 'react';
+import { TestWidget } from './TestWidget';
 
-export default function App(): React.JSX.Element {
+export default function App() {
   return (
-    <BrikDemoApp
-      title="Brik Expo (Old Arch)"
-      enableHotReload={__DEV__}
-      showHotReloadStatus={true}
-    />
+    <ScrollView style={styles.container}>
+      <TestWidget />
+      <BrikDemoApp title="Brik Expo" />
+    </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

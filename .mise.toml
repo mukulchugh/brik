@@ -30,8 +30,8 @@ _.file = ".env"
 # Node options for larger projects
 NODE_OPTIONS = "--max-old-space-size=4096"
 
-# Java home for Android builds
-JAVA_HOME = "{{config_root}}/.mise/installs/java/zulu-17.60.17.0"
+# Java home for Android builds (mise manages this automatically)
+# JAVA_HOME is set automatically by mise
 
 # Android environment (developers should set ANDROID_HOME in their shell)
 # ANDROID_HOME = "$HOME/Library/Android/sdk"
@@ -110,19 +110,75 @@ echo "✅ Project cleaned!"
 
 [tasks.dev-rn-arch]
 description = "Start Metro for brik-rn-arch on port 8081"
-run = "cd examples/brik-rn-arch && npm start -- --port 8081"
+run = "cd examples/brik-rn-arch && pnpm start -- --port 8081"
 
 [tasks.dev-rn]
 description = "Start Metro for brik-rn on port 8082"
-run = "cd examples/brik-rn && npm start -- --port 8082"
+run = "cd examples/brik-rn && pnpm start -- --port 8082"
 
 [tasks.dev-expo]
 description = "Start Metro for brik-expo on port 8083"
-run = "cd examples/brik-expo && npx expo start --port 8083"
+run = "cd examples/brik-expo && pnpm expo start --port 8083"
 
 [tasks.dev-expo-arch]
 description = "Start Metro for brik-expo-arch on port 8084"
-run = "cd examples/brik-expo-arch && npx expo start --port 8084"
+run = "cd examples/brik-expo-arch && pnpm expo start --port 8084"
+
+[tasks.ios-rn-arch]
+description = "Run brik-rn-arch on iOS Simulator"
+run = """
+cd examples/brik-rn-arch
+pnpm expo run:ios
+"""
+
+[tasks.ios-rn]
+description = "Run brik-rn on iOS Simulator"
+run = """
+cd examples/brik-rn
+pnpm expo run:ios
+"""
+
+[tasks.ios-expo]
+description = "Run brik-expo on iOS Simulator"
+run = """
+cd examples/brik-expo
+pnpm expo run:ios
+"""
+
+[tasks.ios-expo-arch]
+description = "Run brik-expo-arch on iOS Simulator"
+run = """
+cd examples/brik-expo-arch
+pnpm expo run:ios
+"""
+
+[tasks.android-rn-arch]
+description = "Run brik-rn-arch on Android Emulator"
+run = """
+cd examples/brik-rn-arch
+pnpm expo run:android
+"""
+
+[tasks.android-rn]
+description = "Run brik-rn on Android Emulator"
+run = """
+cd examples/brik-rn
+pnpm expo run:android
+"""
+
+[tasks.android-expo]
+description = "Run brik-expo on Android Emulator"
+run = """
+cd examples/brik-expo
+pnpm expo run:android
+"""
+
+[tasks.android-expo-arch]
+description = "Run brik-expo-arch on Android Emulator"
+run = """
+cd examples/brik-expo-arch
+pnpm expo run:android
+"""
 
 [tasks.dev-all]
 description = "Start all Metro servers in parallel (requires tmux or separate terminals)"
