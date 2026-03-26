@@ -402,6 +402,18 @@ export async function compileFiles(options: CompileOptions): Promise<IRRoot[]> {
 
     // First, check for Live Activity functions
     traverse(ast, {
+      CallExpression(path: any) {
+        if (
+          path.node.callee &&
+          path.node.callee.type === 'Identifier' &&
+          path.node.callee.name.startsWith('use')
+        ) {
+          console.warn(`\n⚠️  [Brik] React hook '${path.node.callee.name}' is not supported.`);
+          console.warn(`   Widgets run natively as pure Swift UI directly and do not support JS runtime React state.`);
+          console.warn(`   File: ${rel}\n`);
+          throw new Error(`Brik Compiler Error: Unsupported React hook '${path.node.callee.name}' in ${rel}`);
+        }
+      },
       FunctionDeclaration(path: any) {
         if (hasActivityComment(path)) {
           const body = path.node.body.body;
@@ -427,6 +439,18 @@ export async function compileFiles(options: CompileOptions): Promise<IRRoot[]> {
     // If no Live Activity found, look for regular widget JSX
     if (!liveActivityConfig) {
       traverse(ast, {
+        CallExpression(path: any) {
+          if (
+            path.node.callee &&
+            path.node.callee.type === 'Identifier' &&
+            path.node.callee.name.startsWith('use')
+          ) {
+            console.warn(`\n⚠️  [Brik] React hook '${path.node.callee.name}' is not supported.`);
+            console.warn(`   Widgets run natively as pure Swift UI directly and do not support JS runtime React state.`);
+            console.warn(`   File: ${rel}\n`);
+            throw new Error(`Brik Compiler Error: Unsupported React hook '${path.node.callee.name}' in ${rel}`);
+          }
+        },
         JSXElement(path: any) {
           if (t.isJSXIdentifier(path.node.openingElement.name)) {
             const n = buildIRNode(path.node);

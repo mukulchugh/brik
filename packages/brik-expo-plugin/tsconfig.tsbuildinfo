@@ -1,1 +1,1 @@
-{"root":["./src/index.ts"],"version":"5.9.2"}
+{"root":["./src/constants.ts","./src/index.ts","./src/types.ts","./src/ios/podfile.ts","./src/ios/xcode/buildphases.ts","./src/ios/xcode/configurationlist.ts","./src/ios/xcode/groups.ts","./src/ios/xcode/index.ts","./src/ios/xcode/mainappsettings.ts","./src/ios/xcode/productfile.ts","./src/ios/xcode/target.ts","./src/utils/filediscovery.ts"],"version":"5.9.2"}
