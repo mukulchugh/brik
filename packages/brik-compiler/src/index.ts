@@ -1,7 +1,7 @@
 import { parse } from '@babel/parser';
 import traverse from '@babel/traverse';
 import * as t from '@babel/types';
-import { BRIK_DIR, validateRoot, normalizeStyle, type Node as IRNode, type Root as IRRoot } from '@brik/core';
+import { BRIK_DIR, normalizeStyle, validateRoot, type Node as IRNode, type Root as IRRoot } from '@brik/core';
 import fs from 'fs-extra';
 import { glob } from 'glob';
 import path from 'path';

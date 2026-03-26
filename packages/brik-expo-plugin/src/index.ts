@@ -1,7 +1,6 @@
 import { ConfigPlugin, withDangerousMod, withEntitlementsPlist } from '@expo/config-plugins';
 import fs from 'fs';
 import { execSync } from 'node:child_process';
-import path from 'path';
 import { configureXcodeProject } from './ios/xcode';
 
 type Options = { platform?: 'ios' | 'android' | 'all'; widgetName?: string; appGroupId?: string };
