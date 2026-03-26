@@ -24,7 +24,7 @@
     "build": "tsc -b",
     "dev": "tsc -b --watch",
     "typecheck": "tsc --noEmit",
-    "test": "jest --passWithNoTests",
+    "test": "jest",
     "clean": "rm -rf dist"
   },
   "keywords": [

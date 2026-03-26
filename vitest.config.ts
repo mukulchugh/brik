@@ -1,5 +1,5 @@
-import { defineConfig } from 'vitest/config';
 import path from 'path';
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
@@ -23,6 +23,7 @@ export default defineConfig({
       'packages/**/__tests__/**/*.test.tsx'
     ],
     exclude: [
+      '**/node_modules/**',
       'node_modules',
       'dist',
       '.turbo',
